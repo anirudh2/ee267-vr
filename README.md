@@ -14,7 +14,7 @@ git clone https://github.com/stanfordcomputationalimaging/ee267_hw.git
 Then, you are good to go! Enjoy the homework! The submission procedure is described in the homework document.
 
 # How to get the following homework (Homework 2~)
-Now, you should have this repository in your local machine. Before pulling the new homework, you need to make a commit of your change in your local repository. (It is also okay to freshly clone this repository to your machine.)
+Now, you should have this repository in your local machine. Before pulling the new homework, you need to make a commit of your change in your local repository.
 For example, you can execute
 ```shell
 git add --all
