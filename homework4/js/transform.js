@@ -139,20 +139,26 @@ var MVPmat = function ( dispParams ) {
 
 		// Modify right, left, top, bottom to compute correct perspective
 		// matrices for HMD. You may use some display parameters.
-		// NOTE: The values given in the starter code is not correct at all.
+		// NOTE: The values given in the starter code are not correct at all.
 
-		var right = 25 * ( dispParams.canvasWidth * dispParams.pixelPitch / 2 )
-					* ( state.clipNear / dispParams.distanceScreenViewer );
+		var w1 = M*ipd/2;
+		var w_prime = dispParams.canvasWidth*dispParams.pixelPitch;
+		var w2 = M*(w_prime - ipd)/2;
 
-		var left = - right;
+		var right = state.clipNear * w1/dispParams.distanceScreenViewer;
+		var left = -state.clipNear * w2/dispParams.distanceScreenViewer;
 
-		var top = 25 * ( dispParams.canvasHeight * dispParams.pixelPitch / 2 )
-				   * ( state.clipNear / dispParams.distanceScreenViewer );
+		var top = state.clipNear*M*dispParams.canvasHeight*dispParams.pixelPitch/(
+			2*dispParams.distanceScreenViewer);
 
-		var bottom = - top;
+		var bottom = -top;
 
 		this.stereoProjectionMat.L = computePerspectiveTransform(
 			left, right, top, bottom, clipNear, clipFar );
+
+		var temp = right;
+		right = -left;
+		left = -temp;
 
 		this.stereoProjectionMat.R = computePerspectiveTransform(
 			left, right, top, bottom, clipNear, clipFar );
