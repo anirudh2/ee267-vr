@@ -39,7 +39,19 @@ uniform float distLensScreen;
 
 void main() {
 
-	gl_FragColor = texture2D( map, textureCoords );
+	float r_tilde = sqrt(pow((textureCoords.x - centerCoordinate.x),2.0) + pow((textureCoords.y - centerCoordinate.y),2.0));
+	float r = r_tilde/distLensScreen;
+	float x_distorted = textureCoords.x*(1.0 + K.x*pow(r,2.0) + K.y*pow(r,4.0));
+	float y_distorted = textureCoords.y*(1.0 + K.x*pow(r,2.0) + K.y*pow(r,4.0));
+	if (x_distorted < 0.0 || x_distorted > 1.0 || y_distorted < 0.0 || y_distorted > 1.0) {
+		gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+	} else {
+		vec2 distortedTextureCoords = vec2(x_distorted, y_distorted);
+		gl_FragColor = texture2D(map, distortedTextureCoords);
+	}
+
+	//gl_FragColor = texture2D( map, textureCoords );
+	//gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 
 }
 ` );
