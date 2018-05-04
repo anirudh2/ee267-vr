@@ -141,10 +141,15 @@ var MVPmat = function ( dispParams ) {
 		// matrices for HMD. You may use some display parameters.
 		// NOTE: The values given in the starter code are not correct at all.
 
-		var right = state.clipNear*(dispParams.lensMagnification*dispParams.ipd/2)/dispParams.distanceScreenViewer;
-		var left = -state.clipNear*dispParams.lensMagnification*(dispParams.canvasWidth*dispParams.pixelPitch - dispParams.ipd)/(2*dispParams.distanceScreenViewer);
+		var w1 = M*ipd/2;
+		var w_prime = dispParams.canvasWidth*dispParams.pixelPitch;
+		var w2 = M*(w_prime - ipd)/2;
 
-		var top = state.clipNear*dispParams.lensMagnification*dispParams.canvasHeight*dispParams.pixelPitch/(2*dispParams.distanceScreenViewer);
+		var right = state.clipNear * w1/dispParams.distanceScreenViewer;
+		var left = -state.clipNear * w2/dispParams.distanceScreenViewer;
+
+		var top = state.clipNear*M*dispParams.canvasHeight*dispParams.pixelPitch/(
+			2*dispParams.distanceScreenViewer);
 
 		var bottom = -top;
 

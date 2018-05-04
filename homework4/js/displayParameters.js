@@ -48,7 +48,7 @@ var DisplayParameters = function () {
 	this.canvasWidth = window.innerWidth;
 
 	// Interpupillnary distance in [mm]
-	this.ipd = 42; //64...  32 works well
+	this.ipd = 64; 
 
 	// distance between lens and screen in [mm]
 	this.distLensScreen = 39;
