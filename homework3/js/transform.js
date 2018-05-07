@@ -74,6 +74,8 @@ var MVPmat = function ( dispParams ) {
 
 		var viewerTarget = state.viewerTarget;
 
+		var shiftMat = new THREE.Matrix4().makeTranslation(halfIpdShift,0.0,0.0);
+
 		var translationMat
 			= new THREE.Matrix4().makeTranslation(
 				- viewerPosition.x, - viewerPosition.y, - viewerPosition.z );
@@ -90,7 +92,7 @@ var MVPmat = function ( dispParams ) {
 			new THREE.Matrix4().makeBasis( x_c, y_c, z_c ).transpose();
 
 		return new THREE.Matrix4().
-			premultiply( translationMat ).premultiply( rotationMat );
+			premultiply(shiftMat).premultiply( translationMat ).premultiply( rotationMat );
 
 	}
 
@@ -163,10 +165,11 @@ var MVPmat = function ( dispParams ) {
 
 			// Compute projection matrix
 			var right =
-				( dispParams.canvasWidth * dispParams.pixelPitch / 2 )
-				* ( state.clipNear / dispParams.distanceScreenViewer );
+				( dispParams.canvasWidth * dispParams.pixelPitch + dispParams.ipd )
+				* ( state.clipNear / (dispParams.distanceScreenViewer*2));
 
-			var left = - right;
+			var left = - ( dispParams.canvasWidth * dispParams.pixelPitch - dispParams.ipd )
+			* ( state.clipNear / (dispParams.distanceScreenViewer*2));
 
 			var top =
 				( dispParams.canvasHeight * dispParams.pixelPitch / 2 )
@@ -178,7 +181,7 @@ var MVPmat = function ( dispParams ) {
 				left, right, top, bottom, state.clipNear, state.clipFar );
 
 			this.anaglyphProjectionMat.R = computePerspectiveTransform(
-				left, right, top, bottom, state.clipNear, state.clipFar );
+				-right, -left, top, bottom, state.clipNear, state.clipFar );
 
 		}
 

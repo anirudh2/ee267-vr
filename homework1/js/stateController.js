@@ -156,9 +156,13 @@ var StateController = function ( dispParams ) {
 	// the mouse movement between frames in Three's coordinate as THREE.Vector2
 	function computeMovement( x, y, previousPosition ) {
 
-		/* TODO (2.1.1.1) Mouse Movement */
+		// store temporary prevX and prevY
+		var prevX = previousPosition.x, prevY = previousPosition.y;
+		// set previousPosition to the new x and y
+		previousPosition.set( x, y );
 
-		return new THREE.Vector2();
+		// return the new x and y positions
+		return new THREE.Vector2(x - prevX, y - prevY);
 
 	}
 
@@ -182,6 +186,11 @@ var StateController = function ( dispParams ) {
 		 * (2.1.1.2) Mapping Mouse Movement to Matrix Parameters
 		 * (2.1.2) Model Rotation
 		 */
+		var currX = _this.state.modelTranslation.x,
+		currY = _this.state.modelTranslation.y,
+		currZ = _this.state.modelTranslation.z,
+		rotX = _this.state.modelRotation.x,
+		rotY = _this.state.modelRotation.y;
 
 		var ctrlKey = e.metaKey // for Mac's command key
 			|| ( navigator.platform.toUpperCase().indexOf( "MAC" ) == - 1
@@ -189,18 +198,14 @@ var StateController = function ( dispParams ) {
 
 		// Check if the shift-key is pressed
 		if ( e.shiftKey && ! ctrlKey ) {
-
-			// XY translation
-
+			_this.state.modelTranslation.set(currX + movement.x, currY - movement.y, currZ);
 		} else if ( ! e.shiftKey && ctrlKey ) {
-
-			// Z translation
-
-
+			_this.state.modelTranslation.set(currX, currY, currZ - movement.y);
 		} else {
-
-			// Rotation
-
+			// convert to radians (assume movement is in degrees)
+			rotYMouse = THREE.Math.degToRad(movement.x);
+			rotXMouse = THREE.Math.degToRad(movement.y);
+			_this.state.modelRotation.set(rotX + rotXMouse, rotY + rotYMouse);
 		}
 
 	}
@@ -213,22 +218,20 @@ var StateController = function ( dispParams ) {
 	// e: jQuery event
 	// movement: the mouse movement computed by computeMovement() function
 	function updateViewPosition( e, movement ) {
-
-		/* TODO (2.2.1) Move viewer position */
-
 		var ctrlKey = e.metaKey // for Mac's command key
 			|| ( navigator.platform.toUpperCase().indexOf( "MAC" ) == - 1
 				&& e.ctrlKey );
 
+		var currX = _this.state.viewerPosition.x,
+		currY = _this.state.viewerPosition.y,
+		currZ = _this.state.viewerPosition.z;
 		// Check if shift-key pressed
 		if ( ! ctrlKey ) {
-
 			// XY translation
-
+			_this.state.viewerPosition.set(currX + movement.x, currY - movement.y, currZ);
 		} else {
-
 			// Z translation
-
+			_this.state.viewerPosition.set(currX, currY, currZ - movement.y);
 		}
 
 	}
@@ -241,22 +244,19 @@ var StateController = function ( dispParams ) {
 	// e: jQuery event
 	// movement: the mouse movement computed by computeMovement() function
 	function updateViewTarget( e, movement ) {
-
-		/* TODO (2.2.2) Move viewer target */
-
 		var ctrlKey = e.metaKey // for Mac's command key
 			|| ( navigator.platform.toUpperCase().indexOf( "MAC" ) == - 1
 				&& e.ctrlKey );
-
+		var currX = _this.state.viewerTarget.x,
+		currY = _this.state.viewerTarget.y,
+		currZ = _this.state.viewerTarget.z;
 		// Check if shift-key pressed
 		if ( ! ctrlKey ) {
-
 			// XY translation
-
+			_this.state.viewerTarget.set(currX + movement.x, currY - movement.y, currZ);
 		} else {
-
 			// Z translation
-
+			_this.state.viewerTarget.set(currX, currY, currZ - movement.y);
 		}
 
 	}
@@ -269,9 +269,15 @@ var StateController = function ( dispParams ) {
 	// e: jQuery event
 	// movement: the mouse movement computed by computeMovement() function
 	function updateProjectionParams( e, movement ) {
-
-		/* TODO (2.3.1) Implement Perspective Transform */
-
+		// Set a new near-clipping plane
+		currClip = _this.state.clipNear;
+		newClip = currClip - movement.y;
+		// clip to 1 if less than 1
+		if (newClip > 1) {
+			_this.state.clipNear = newClip;
+		} else {
+			_this.state.clipNear = 1;
+		}
 	}
 
 

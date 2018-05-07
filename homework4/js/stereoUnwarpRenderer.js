@@ -37,9 +37,13 @@ var StereoUnwarpRenderer = function ( webglRenderer, dispParams ) {
 	// TODO
 	// Compute center coordinates for each eye in texture (u,v) coordinates
 	// Change the initial values Vector2
-	var centerCoordL = new THREE.Vector2( 0, 0 );
+	var leftEyeX = 1.0 - halfIpd/(dispParams.canvasWidth); //seems like halfIpd is already in pixels
+	var leftEyeY = 0.5;
+	var centerCoordL = new THREE.Vector2( leftEyeX, leftEyeY );
 
-	var centerCoordR = new THREE.Vector2( 0, 0 );
+	var rightEyeX = halfIpd/(dispParams.canvasWidth); //seems like halfIpd is already in pixels
+	var rightEyeY = 0.5;
+	var centerCoordR = new THREE.Vector2( rightEyeX, rightEyeY );
 
 
 	// Left eye

@@ -38,10 +38,12 @@ var FoveatedRenderer = function ( webglRenderer, dispParams ) {
 		dispParams.pixelPitch, dispParams.distanceScreenViewer );
 
 	// Eccentricity angle at which a 4x loss in resolution is imperceivable
-	var e1 = computeEcc( /* TODO (2.2.3) */ );
+	// (2*viusal degree of 1 pixel)*4
+	var e1 = computeEcc( pixelVA*8 );
 
 	// Eccentricity angle at which a 8x loss in resolution is imperceivable
-	var e2 = computeEcc( /* TODO (2.2.3) */ );
+	// (2*viusal degree of 1 pixel)*8
+	var e2 = computeEcc( pixelVA*16 );
 
 	var material = new THREE.RawShaderMaterial( {
 
@@ -100,9 +102,9 @@ var FoveatedRenderer = function ( webglRenderer, dispParams ) {
 	// visual angle per pixel
 	function computePixelVA( pixelPitch, distanceScreenViewer ) {
 
-		/* TODO (2.2.1) Visual Angle of a Pixel */
-
-		return 0;
+		// theta = rad2deg(2*arctan(pitch/2/distance))
+		var theta = (180/Math.PI)*2*Math.atan(pixelPitch/(2*distanceScreenViewer));
+		return theta;
 
 	}
 
@@ -116,9 +118,9 @@ var FoveatedRenderer = function ( webglRenderer, dispParams ) {
 	//  eccentricity
 	function computeEcc( mar ) {
 
-		/* TODO (2.2.2) Eccentricity for some MAR */
-
-		return 0;
+		// e = (mar-w0)/m
+		var e = (mar-(1.0/48.0))/(0.0275);
+		return e;
 
 	}
 

@@ -29,6 +29,10 @@ void main() {
 
 	gl_Position = projectionMat * modelViewMat * vec4( position, 1.0 );
 
+  vec4 positionView = modelViewMat * vec4( position, 1.0 );
+  fragPosCam = positionView.xyz;
+
+  normalCam = normalMat * normal;
 }
 ` );
 

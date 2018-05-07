@@ -85,7 +85,7 @@ var StateController = function ( dispParams ) {
 
 		},
 
-		attenuation: new THREE.Vector3( 2.0, 0.0, 0.0 ),
+		attenuation: new THREE.Vector3( 2.0, 0.0, 0.0001 ),
 
 	};
 

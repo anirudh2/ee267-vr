@@ -52,7 +52,35 @@ uniform float blur2[int(blurRad2)*2+1];
 
 void main() {
 
-	gl_FragColor = texture2D( textureMap,  textureCoords );
+  // Approximation of current pixel eccentricity
+  float currE = length(textureCoords*windowSize-gazePosition)*(pixelVA);
+
+  vec4 colourVec = vec4(0.0, 0.0, 0.0, 0.0);
+  if (currE < e1) {
+    gl_FragColor = texture2D( textureMap,  textureCoords );
+  } else if (currE > e2) {
+    for (int i = -int(blurRad2); i < int(blurRad2)+1; i++) {
+      for (int j = -int(blurRad2); j < int(blurRad2)+1; j++) {
+        colourVec += blur2[i+int(blurRad2)]*blur2[j+int(blurRad2)]*texture2D(textureMap,textureCoords+vec2(float(i)/windowSize.x, float(j)/windowSize.y));
+      }
+    }
+    colourVec.w = 1.0;
+    gl_FragColor = colourVec;
+  } else {
+    for (int i = -int(blurRad1); i < int(blurRad1)+1; i++) {
+      for (int j = -int(blurRad1); j < int(blurRad1)+1; j++) {
+        colourVec += blur1[i+int(blurRad1)]*blur1[j+int(blurRad1)]*texture2D(textureMap,textureCoords+vec2(float(i)/windowSize.x, float(j)/windowSize.y));
+      }
+    }
+    colourVec.w = 1.0;
+    gl_FragColor = colourVec;
+  }
+
+
+
+
+  // gl_FragColor = color;
+	// gl_FragColor = texture2D( textureMap,  textureCoords );
 
 }
 ` );

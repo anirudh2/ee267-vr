@@ -54,10 +54,46 @@ uniform vec3 ambientLightColor;
 
 void main() {
 
-	// Compute ambient reflection
-	vec3 ambientReflection = material.ambient * ambientLightColor;
+  // Tranforming position to view space
+  vec3 positionViewCoords = fragPosCam;
+  vec3 V = normalize(-positionViewCoords);
 
-	vec3 fColor = ambientReflection;
+  // Transforming normal to view space
+  vec3 normalView = normalize(normalCam);
+
+  // Lighting Calculations
+
+  vec3 diffuseReflection;
+  vec3 specularReflection;
+  for (int i=0;i<NUM_POINT_LIGHTS;i++) {
+
+    // Converting pointLights[i] to view space
+    vec4 pointLightView = viewMat * vec4(pointLights[i].position, 1.0);
+
+    // Find d
+    vec3 d_vec =  pointLightView.xyz - positionViewCoords;
+    float d = length(d_vec);
+
+    // Find L
+    vec3 L = normalize(d_vec);
+
+    // Attenuation term
+    float att = 1.0/(attenuation.x + (attenuation.y*d) + (attenuation.z*pow(d,2.0)));
+
+    // Find diffuse reflection
+    diffuseReflection = diffuseReflection + (att * material.diffuse * pointLights[i].color * max(dot(normalView,L),0.0));
+
+    // Find R
+    vec3 R = normalize(-reflect(L,normalView));
+
+    // Find specular reflection
+    specularReflection = specularReflection + (att * material.specular * pointLights[i].color * pow(max(dot(R,V),0.0),material.shininess));
+  }
+
+  // Compute ambient reflection
+  vec3 ambientReflection = material.ambient * ambientLightColor;
+
+  vec3 fColor = ambientReflection + diffuseReflection + specularReflection;
 
 	gl_FragColor = vec4( fColor, 1.0 );
 

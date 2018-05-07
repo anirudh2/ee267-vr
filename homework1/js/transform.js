@@ -38,11 +38,14 @@ var MVPmat = function ( dispParams ) {
 	// INPUT
 	// state: state of StateController
 	function computeModelTransform( state ) {
-
-		/* TODO (2.1.1.3) Matrix Update / (2.1.2) Model Rotation  */
-
-		return new THREE.Matrix4();
-
+		// Make the rotation and translation matrices as in the Lecture 2 slides
+		tMat = new THREE.Matrix4().makeTranslation(state.modelTranslation.x,
+		state.modelTranslation.y,state.modelTranslation.z);
+		rXMat = new THREE.Matrix4().makeRotationX(state.modelRotation.x);
+		rYMat = new THREE.Matrix4().makeRotationY(state.modelRotation.y);
+		rMat = new THREE.Matrix4().multiplyMatrices(rXMat,rYMat); // first y then x
+		// first rotate then translate (switch if we want to rotate about world axes)
+		return new THREE.Matrix4().multiplyMatrices(tMat,rMat);
 	}
 
 	// A function to compute a view matrix based on the current state.
@@ -53,14 +56,28 @@ var MVPmat = function ( dispParams ) {
 	// INPUT
 	// state: state of StateController
 	function computeViewTransform( state ) {
-
-		/* TODO (2.2.3) Implement View Transform */
-
+		// Find zC
+		eMinusC = new THREE.Vector3().subVectors(state.viewerPosition, state.viewerTarget);
+		normEMinusC = eMinusC.length();
+		zC = eMinusC.divideScalar(normEMinusC);
+		// Find xC. As in Piazza, the up-vector is assumed to be (0,1,0)
+		u = new THREE.Vector3(0,1,0);
+		uCrosszC = new THREE.Vector3().crossVectors(u, zC);
+		normUCrosszC = uCrosszC.length();
+		xC = uCrosszC.divideScalar(normUCrosszC);
+		// Find yC
+		yC = new THREE.Vector3().crossVectors(zC, xC);
+		// Return the view transform matrix as on Lecture 2 slide 56
 		return new THREE.Matrix4().set(
-			1, 0, 0, 0,
-			0, 1, 0, 0,
-			0, 0, 1, - 800,
+			xC.x, xC.y, xC.z, -xC.dot(state.viewerPosition),
+			yC.x, yC.y, yC.z, -yC.dot(state.viewerPosition),
+			zC.x, zC.y, zC.z, -zC.dot(state.viewerPosition),
 			0, 0, 0, 1 );
+		// return new THREE.Matrix4().set(
+		// 		1, 0, 0, 0,
+		// 		0, 1, 0, 0,
+		// 		0, 0, 1, -800,
+		// 		0, 0, 0, 1 );
 
 	}
 
@@ -75,12 +92,19 @@ var MVPmat = function ( dispParams ) {
 	function computePerspectiveTransform(
 		left, right, top, bottom, clipNear, clipFar ) {
 
-		/* TODO (2.3.1) Implement Perspective Projection */
+		// Define variables for legibility
+		var mOne = (2*clipNear)/(right-left),
+		mFive = (2*clipNear)/(top-bottom),
+		mNine = (right+left)/(right-left),
+		mTen = (top+bottom)/(top-bottom),
+		mElf = -(clipFar + clipNear)/(clipFar - clipNear),
+		mFift = -(2*clipFar*clipNear)/(clipFar-clipNear);
 
+		// return the projection matrix as specified in Lecture 2 slide 61
 		return new THREE.Matrix4().set(
-				6.7, 0, 0, 0,
-				0, 6.5, 0, 0,
-				0, 0, - 1.0, - 2.0,
+				mOne, 0, mNine, 0,
+				0, mFive, mTen, 0,
+				0, 0, mElf, mFift,
 				0, 0, - 1.0, 0 );
 
 	}
@@ -96,9 +120,20 @@ var MVPmat = function ( dispParams ) {
 	function computeOrthographicTransform(
 		left, right, top, bottom, clipNear, clipFar ) {
 
-		/* TODO (2.3.2) Implement Orthographic Projection */
+		// Create variables for legibility
+		var mOne = 2/(right-left),
+		mSix = 2/(top-bottom),
+		mElf = -2/(clipFar-clipNear),
+		mThir = -(right+left)/(right-left),
+		mFourt = -(top+bottom)/(top-bottom),
+		mFift = -(clipFar+clipNear)/(clipFar-clipNear);
 
-		return new THREE.Matrix4();
+		// Return the orthographic projection matrix as shown in Lecture 2 slide 62
+		return new THREE.Matrix4().set(
+			mOne, 0, 0, mThir,
+			0, mSix, 0, mFourt,
+			0, 0, mElf, mFift,
+			0, 0, 0, 1);
 
 	}
 

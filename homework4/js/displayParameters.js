@@ -48,7 +48,7 @@ var DisplayParameters = function () {
 	this.canvasWidth = window.innerWidth;
 
 	// Interpupillnary distance in [mm]
-	this.ipd = 64;
+	this.ipd = 64; 
 
 	// distance between lens and screen in [mm]
 	this.distLensScreen = 39;
@@ -76,9 +76,7 @@ var DisplayParameters = function () {
 	// You may not need all of them.
 	function computeLensMagnification() {
 
-		/* TODO Physical Parameter Estimation */
-
-		return 1;
+		return focalLength/(focalLength - _this.distLensScreen);
 
 	}
 
@@ -93,9 +91,8 @@ var DisplayParameters = function () {
 	// You may not need all of them.
 	function computeDistanceScreenViewer() {
 
-		/* TODO Physical Parameter Estimation */
-
-		return 1500;
+		return eyeRelief + 1/Math.abs((1/focalLength)-(1/_this.distLensScreen));
+		// return 1500;
 
 	}
 
