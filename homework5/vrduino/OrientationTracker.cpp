@@ -37,6 +37,25 @@ void OrientationTracker::measureImuBiasVariance() {
 
   //check if imu.read() returns true
   //then read imu.gyrX, imu.accX, ...
+  const int num_measurements = 1000;
+  double gyrXData[num_measurements];
+  double gyrYData[num_measurements];
+  double gyrZData[num_measurements];
+  double accXData[num_measurements];
+  double accYData[num_measurements];
+  double accZData[num_measurements];
+  int i = 0;
+  while (i < num_measurements) {
+    if (imu.read() == true) { 
+      gyrXData[i] = imu.gyrX;
+      gyrYData[i] = imu.gyrY;
+      gyrZData[i] = imu.gyrZ;
+      accXData[i] = imu.accX;
+      accYData[i] = imu.accY;
+      accZData[i] = imu.accZ;
+      i++;
+    }
+  }
 
   //compute bias, variance.
   //update:
@@ -44,10 +63,37 @@ void OrientationTracker::measureImuBiasVariance() {
   //gyrVariance[0], gyrBias[1], gyrBias[2]
   //accBias[0], accBias[1], accBias[2]
   //accVariance[0], accBias[1], accBias[2]
+  for (int i = 0; i < num_measurements; i++) {
+    gyrBias[0] += gyrXData[i];
+    gyrBias[1] += gyrYData[i];
+    gyrBias[2] += gyrZData[i];
+    accBias[0] += accXData[i];
+    accBias[1] += accYData[i];
+    accBias[2] += accZData[i];
+  }
 
+  gyrBias[0] /= num_measurements;
+  gyrBias[1] /= num_measurements;
+  gyrBias[2] /= num_measurements;
+  accBias[0] /= num_measurements;
+  accBias[1] /= num_measurements;
+  accBias[2] /= num_measurements;
 
+  for (int i = 0; i < num_measurements; i++) {
+    gyrVariance[0] += (gyrBias[0] - gyrXData[i])*(gyrBias[0] - gyrXData[i]);
+    gyrVariance[1] += (gyrBias[1] - gyrYData[i])*(gyrBias[1] - gyrYData[i]);
+    gyrVariance[2] += (gyrBias[2] - gyrZData[i])*(gyrBias[2] - gyrZData[i]);
+    accVariance[0] += (accBias[0] - accXData[i])*(accBias[0] - accXData[i]);
+    accVariance[1] += (accBias[1] - accYData[i])*(accBias[1] - accYData[i]);
+    accVariance[2] += (accBias[2] - accZData[i])*(accBias[2] - accZData[i]);
+  }
 
-
+  gyrVariance[0] /= num_measurements;
+  gyrVariance[1] /= num_measurements;
+  gyrVariance[2] /= num_measurements;
+  accVariance[0] /= num_measurements;
+  accVariance[1] /= num_measurements;
+  accVariance[2] /= num_measurements;
 
 }
 
@@ -128,15 +174,26 @@ bool OrientationTracker::updateImuVariables() {
     return false;
   }
 
+  const int us_per_s = 1000000;
   //call micros() to get current time in microseconds
+  unsigned long currTime = micros();
+  unsigned long currentTimeImu = currTime / us_per_s;
   //update:
   //previousTimeImu (in seconds)
   //deltaT (in seconds)
+  deltaT = currentTimeImu - previousTimeImu;
+  previousTimeImu = currentTimeImu;
 
   //read imu.gyrX, imu.accX ...
   //update:
   //gyr[0], ...
   //acc[0], ...
+  gyr[0] = imu.gyrX - gyrBias[0];
+  gyr[1] = imu.gyrY - gyrBias[1];
+  gyr[2] = imu.gyrZ - gyrBias[2];
+  acc[0] = imu.accX - accBias[0];
+  acc[1] = imu.accY - accBias[1];
+  acc[2] = imu.accZ - accBias[2];
 
 
 
