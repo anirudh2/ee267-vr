@@ -176,8 +176,8 @@ bool OrientationTracker::updateImuVariables() {
 
   const int us_per_s = 1000000;
   //call micros() to get current time in microseconds
-  unsigned long currTime = micros();
-  unsigned long currentTimeImu = currTime / us_per_s;
+  float currTime = micros();
+  float currentTimeImu = currTime / us_per_s;
   //update:
   //previousTimeImu (in seconds)
   //deltaT (in seconds)
@@ -191,12 +191,9 @@ bool OrientationTracker::updateImuVariables() {
   gyr[0] = imu.gyrX - gyrBias[0];
   gyr[1] = imu.gyrY - gyrBias[1];
   gyr[2] = imu.gyrZ - gyrBias[2];
-  acc[0] = imu.accX - accBias[0];
-  acc[1] = imu.accY - accBias[1];
-  acc[2] = imu.accZ - accBias[2];
-
-
-
+  acc[0] = imu.accX;
+  acc[1] = imu.accY;
+  acc[2] = imu.accZ;
 
   return true;
 
@@ -213,8 +210,11 @@ void OrientationTracker::updateOrientation() {
 
   //update:
   //flatlandRollGyr
+  flatlandRollGyr = computeFlatlandRollGyr(flatlandRollGyr, gyr, deltaT);
   //flatlandRollAcc
+  flatlandRollAcc = computeFlatlandRollAcc(acc);
   //flatlandRollComp
+  flatlandRollComp = computeFlatlandRollComp(flatlandRollComp, gyr, flatlandRollAcc, deltaT, imuFilterAlpha);
   //quaternionGyr
   //eulerAcc
   //quaternionComp

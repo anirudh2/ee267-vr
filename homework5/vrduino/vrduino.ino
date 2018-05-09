@@ -48,7 +48,7 @@ const int ACC    = 4;
 const int QC     = 5;
 
 //chose which values you want to stream
-int streamMode = INFO;
+int streamMode = FLAT;
 
 //variables to measure read frequency
 int nReads = 0;
