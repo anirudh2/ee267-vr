@@ -47,8 +47,7 @@ public:
   /* function to construct a quaternion from angle-axis representation. angle is given in degrees. */
   Quaternion& setFromAngleAxis(double angle, double vx, double vy, double vz) {
     double deg2rad = PI/180.0;
-    Quaternion q = Quaternion(cos(deg2rad*angle/2), vx*sin(deg2rad*angle/2), vy*sin(deg2rad*angle/2), vz*sin(deg2rad*angle/2));
-    *this = q;
+    *this = Quaternion(cos(deg2rad*angle/2), vx*sin(deg2rad*angle/2), vy*sin(deg2rad*angle/2), vz*sin(deg2rad*angle/2));
     return *this;
 
   }
@@ -64,8 +63,7 @@ public:
   Quaternion& normalize() {
 
     double l = length();
-    Quaternion q = Quaternion((this->q[0])/l, (this->q[1])/l, (this->q[2])/l, (this->q[3])/l);
-    *this = q;
+    *this = Quaternion((this->q[0])/l, (this->q[1])/l, (this->q[2])/l, (this->q[3])/l);
     return *this;
   }
 
@@ -90,10 +88,12 @@ public:
 
   /* function to rotate a quaternion by r * q * r^{-1} */
   Quaternion rotate(Quaternion& r) {
-    Quaternion q1 = Quaternion().multiply( r, *this );
-    r.inverse(); Quaternion r_inv = r.clone(); r.inverse();
-    Quaternion q2 = Quaternion().multiply( q1, r_inv );
-    return q2;
+    Quaternion rq = Quaternion().multiply( r, *this );
+    r.inverse();
+    Quaternion r_inv = r.clone();
+    r.inverse();
+    Quaternion rot = Quaternion().multiply( rq, r_inv );
+    return rot;
   }
 
 

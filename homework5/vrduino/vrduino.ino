@@ -62,7 +62,7 @@ void setup() {
 
   if (test) {
 
-    delay(300);
+    delay(2000);
     testMain();
     return;
 
