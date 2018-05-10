@@ -11,7 +11,7 @@ double alphaImuFilter = 0.9;
 bool simulateImu = false;
 
 //if test is true, then run tests in TestOrientation.cpp and exit
-bool test = false;
+bool test = true;
 
 //if measureImuBias is true, measure imu bias and variance
 bool measureImuBias = true;
