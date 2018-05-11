@@ -4,14 +4,14 @@
 
 //complementary filter value [0,1].
 //1: ignore acc tilt, 0: use all acc tilt
-double alphaImuFilter = 0.9;
+double alphaImuFilter = 0;
 
 //if true, get imu values from recorded data in external file
 //if false, get imu values from live sampling.
 bool simulateImu = false;
 
 //if test is true, then run tests in TestOrientation.cpp and exit
-bool test = false;//true;
+bool test = false;
 
 //if measureImuBias is true, measure imu bias and variance
 bool measureImuBias = true;
