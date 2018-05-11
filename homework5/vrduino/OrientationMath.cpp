@@ -3,10 +3,11 @@
 /** TODO: see documentation in header file */
 double computeAccPitch(double acc[3]) {
   double acc_pitch;
+  double acc_norm = sqrt(sq(acc[0]) + sq(acc[1]) + sq(acc[2]));
   if (acc[1] > 0) {
-    acc_pitch = -(180.0/PI)*atan2(acc[3], sqrt(sq(acc[0])+sq(acc[1])));
+    acc_pitch = -(180.0/PI)*atan2(acc[2]/acc_norm, sqrt(sq(acc[0])+sq(acc[1])));
   } else {
-    acc_pitch = -(180.0/PI)*atan2(acc[3], -sqrt(sq(acc[0])+sq(acc[1])));
+    acc_pitch = -(180.0/PI)*atan2(acc[2]/acc_norm, -sqrt(sq(acc[0])+sq(acc[1])));
   }
 
   return acc_pitch;
@@ -15,7 +16,8 @@ double computeAccPitch(double acc[3]) {
 /** TODO: see documentation in header file */
 double computeAccRoll(double acc[3]) {
 
-  return -(180.0/PI)*atan2(acc[0],acc[1]);
+  double acc_norm = sqrt(sq(acc[0]) + sq(acc[1]) + sq(acc[2]));
+  return -(180.0/PI)*atan2(acc[0]/acc_norm,acc[1]/acc_norm);
   //return 0.0;
 
 }
