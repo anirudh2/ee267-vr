@@ -78,7 +78,7 @@ void updateQuaternionComp(Quaternion& q, double gyr[3], double acc[3], double de
 
   float phi = acos(q_accel_w.q[2])*180/PI;
   double n = sqrt(sq(-q_accel_w.q[3])+sq(q_accel_w.q[1]));
-  double nx = -q_accel_w.q[3];/n;
+  double nx = -q_accel_w.q[3]/n;
   double nz = q_accel_w.q[1]/n;
 
   Quaternion tilt = q.setFromAngleAxis((1-alpha)*phi, nx, 0.0, nz);
