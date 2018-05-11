@@ -71,10 +71,8 @@ public:
   Quaternion& inverse() {
 
     double l2 = length()*length();
-    Quaternion q = Quaternion((this->q[0])/l2, -(this->q[1])/l2, -(this->q[2])/l2, -(this->q[3])/l2);
-    *this = q;
-    Quaternion& q_reference = q;
-    return q_reference;
+    *this = Quaternion((this->q[0])/l2, -(this->q[1])/l2, -(this->q[2])/l2, -(this->q[3])/l2);
+    return *this;
   }
 
   /* function to multiply two quaternions */
@@ -88,12 +86,10 @@ public:
 
   /* function to rotate a quaternion by r * q * r^{-1} */
   Quaternion rotate(Quaternion& r) {
-    Quaternion rq = Quaternion().multiply( r, *this );
-    r.inverse();
-    Quaternion r_inv = r.clone();
-    r.inverse();
-    Quaternion rot = Quaternion().multiply( rq, r_inv );
-    return rot;
+    Quaternion r_copy = r.clone();
+    Quaternion q = clone();
+    Quaternion prod = multiply(r,q);
+    return multiply(prod, r_copy.inverse());
   }
 
 
