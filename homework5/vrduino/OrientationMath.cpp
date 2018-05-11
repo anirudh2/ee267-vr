@@ -3,10 +3,11 @@
 /** TODO: see documentation in header file */
 double computeAccPitch(double acc[3]) {
 
+  double acc_pitch;
   if (acc[1] > 0) {
-    double acc_pitch = -(180.0/PI)*atan2(acc[3], sqrt(sq(acc[0])+sq(acc[1])))
+    acc_pitch = -(180.0/PI)*atan2(acc[3], sqrt(sq(acc[0])+sq(acc[1])));
   } else {
-    double acc_pitch = -(180.0/PI)*atan2(acc[3], -sqrt(sq(acc[0])+sq(acc[1])))
+    acc_pitch = -(180.0/PI)*atan2(acc[3], -sqrt(sq(acc[0])+sq(acc[1])));
   }
 
   return acc_pitch;
@@ -55,7 +56,7 @@ void updateQuaternionGyr(Quaternion& q, double gyr[3], double deltaT) {
     gyr[2] = gyr[2]/norm_gyr;
   }
 
-  q = Quaternion.multiply(q,Quaternion.setFromAngleAxis(deltaT*norm_gyr, gyr[0],gyr[1],gyr[2]));
+  q = Quaternion().multiply(q,Quaternion().setFromAngleAxis(deltaT*norm_gyr, gyr[0],gyr[1],gyr[2]));
   q.normalize();
 }
 
@@ -72,5 +73,5 @@ void updateQuaternionComp(Quaternion& q, double gyr[3], double acc[3], double de
     gyr[2] = gyr[2]/norm_gyr;
   }
 
-  q = Quaternion.multiply(q,Quaternion.setFromAngleAxis(deltaT*norm_gyr, gyr[0],gyr[1],gyr[2]));
+  q = Quaternion().multiply(q,Quaternion().setFromAngleAxis(deltaT*norm_gyr, gyr[0],gyr[1],gyr[2]));
 }

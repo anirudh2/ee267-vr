@@ -79,6 +79,10 @@ var MVPmat = function ( dispParams ) {
 		// TODO: 2.5.i
 		// Modify this function to use the orietation from the IMU.
 		// You can access the quaternion by state.imuQuaternion
+		
+		//make sure that order of imuQuaternion is correct
+		var quatMat = new THREE.Matrix4().makeRotationFromQuaternion(state.imuQuaternion);
+		
 
 		var viewerPosition = state.viewerPosition;
 
@@ -94,6 +98,10 @@ var MVPmat = function ( dispParams ) {
 		var viewMat = new THREE.Matrix4()
 			.premultiply( translationMat )
 			.premultiply( ipdTranslateMat );
+
+		quatMat.getInverse(quatMat, true);
+
+		viewMat.premultiply(quatMat);
 
 		return viewMat;
 
@@ -114,6 +122,8 @@ var MVPmat = function ( dispParams ) {
 		// incorporate the head-and-neck model.
 		// You can access the quaternion by state.imuQuaternion.
 
+		var quatMat = new THREE.Matrix4().makeRotationFromQuaternion(state.imuQuaternion);
+
 		var viewerPosition = state.viewerPosition;
 
 		var translationMat =
@@ -128,6 +138,25 @@ var MVPmat = function ( dispParams ) {
 		var viewMat = new THREE.Matrix4()
 			.premultiply( translationMat )
 			.premultiply( ipdTranslateMat );
+
+		var translationHeadNeckPosMat =
+			new THREE.Matrix4().makeTranslation(
+				0,
+				neckLength,
+				headLength );
+
+		var translationHeadNeckNegMat =
+			new THREE.Matrix4().makeTranslation(
+				0,
+				-neckLength,
+				-headLength );
+
+		viewMat.premultiply(translationHeadNeckPosMat);
+
+		quatMat.getInverse(quatMat, true);
+
+		viewMat.premultiply(quatMat);
+		viewMat.premultiply(translationHeadNeckNegMat);
 
 		return viewMat;
 
