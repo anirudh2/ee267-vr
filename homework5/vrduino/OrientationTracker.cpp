@@ -46,7 +46,7 @@ void OrientationTracker::measureImuBiasVariance() {
   double accZData[num_measurements];
   int i = 0;
   while (i < num_measurements) {
-    if (imu.read() == true) { 
+    if (imu.read() == true) {
       gyrXData[i] = imu.gyrX;
       gyrYData[i] = imu.gyrY;
       gyrZData[i] = imu.gyrZ;
