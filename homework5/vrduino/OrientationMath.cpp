@@ -52,15 +52,12 @@ void updateQuaternionGyr(Quaternion& q, double gyr[3], double deltaT) {
   // update it to be the new quaternion estimate
   double norm_gyr = sqrt(sq(gyr[0])+sq(gyr[1])+sq(gyr[2]));
 
-  if (norm_gyr < 1e-8)  {
+  if (norm_gyr < pow(10,-8))  {
     norm_gyr = 1;
   }
-  gyr[0] /= norm_gyr;
-  gyr[1] /= norm_gyr;
-  gyr[2] /= norm_gyr;
 
   Quaternion q_del = q.clone();
-  q_del = q_del.setFromAngleAxis(deltaT*norm_gyr, gyr[0],gyr[1],gyr[2]);
+  q_del = q_del.setFromAngleAxis(deltaT*norm_gyr, gyr[0]/norm_gyr,gyr[1]/norm_gyr,gyr[2]/norm_gyr);
   q = q.multiply(q,q_del);
   q.normalize();
 }
