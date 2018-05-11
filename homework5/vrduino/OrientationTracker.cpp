@@ -216,8 +216,11 @@ void OrientationTracker::updateOrientation() {
   //flatlandRollComp
   flatlandRollComp = computeFlatlandRollComp(flatlandRollComp, gyr, flatlandRollAcc, deltaT, imuFilterAlpha);
   //quaternionGyr
+  quaternionGyr = updateQuaternionGyr(quaternionGyr, gyr, deltaT);
   //eulerAcc
+  // eulerAcc = 
   //quaternionComp
+  quaternionComp = updateQuaternionComp(quaternionComp, gyr, eulerAcc, deltaT, imuFilterAlpha);
 
 
 

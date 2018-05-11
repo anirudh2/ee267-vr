@@ -3,11 +3,10 @@
 /** TODO: see documentation in header file */
 double computeAccPitch(double acc[3]) {
 
-  double acc_pitch;
   if (acc[1] > 0) {
-    acc_pitch = -(180.0/PI)*atan2(acc[3], sqrt(sq(acc[0])+sq(acc[1])));
+    double acc_pitch = -(180.0/PI)*atan2(acc[3], sqrt(sq(acc[0])+sq(acc[1])))
   } else {
-    acc_pitch = -(180.0/PI)*atan2(acc[3], -sqrt(sq(acc[0])+sq(acc[1])));
+    double acc_pitch = -(180.0/PI)*atan2(acc[3], -sqrt(sq(acc[0])+sq(acc[1])))
   }
 
   return acc_pitch;
@@ -74,4 +73,18 @@ void updateQuaternionComp(Quaternion& q, double gyr[3], double acc[3], double de
   }
 
   q = Quaternion().multiply(q,Quaternion().setFromAngleAxis(deltaT*norm_gyr, gyr[0],gyr[1],gyr[2]));
+  q.normalize();
+
+  Quaternion q_acc = Quaternion(0, acc[0], acc[1], acc[2]);
+  Quaternion q_rot = q_acc.rotate(q);
+
+  q_rot.normalize();
+
+  double accel = (180.0/PI)*acos(q_rot.q[2]/q_rot.length());
+  double x_tilt = -q_rot.q[3]/sqrt(sq(q_rot.q[1]) + sq(q_rot.q[3]));
+  double z_tilt = -q_rot.q[1]/sqrt(sq(q_rot.q[1]) + sq(q_rot.q[3]));
+  Quaternion tilt = Quaternion().setFromAngleAxis((1-alpha)*accel, x_tilt, 0.0, z_tilt);
+  tilt.normalize();
+  q = Quaternion().multiply(tilt, q);
+  q.normalize();
 }
