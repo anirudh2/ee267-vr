@@ -5,9 +5,9 @@ double computeAccPitch(double acc[3]) {
   double acc_pitch;
   double acc_norm = sqrt(sq(acc[0]) + sq(acc[1]) + sq(acc[2]));
   if (acc[1] > 0) {
-    acc_pitch = -(180.0/PI)*atan2(acc[2]/acc_norm, sqrt(sq(acc[0])+sq(acc[1])));
+    acc_pitch = -(180/PI)*atan2(acc[2]/acc_norm, sqrt(sq(acc[0]/acc_norm)+sq(acc[1]/acc_norm)));
   } else {
-    acc_pitch = -(180.0/PI)*atan2(acc[2]/acc_norm, -sqrt(sq(acc[0])+sq(acc[1])));
+    acc_pitch = -(180/PI)*atan2(acc[2]/acc_norm, -sqrt(sq(acc[0]/acc_norm)+sq(acc[1]/acc_norm)));
   }
 
   return acc_pitch;
