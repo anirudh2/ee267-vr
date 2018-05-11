@@ -71,11 +71,11 @@ void updateQuaternionComp(Quaternion& q, double gyr[3], double acc[3], double de
 
   updateQuaternionGyr(q_new, gyr, deltaT);
 
-  Quaternion q_accel(0.0, acc[0], acc[1], acc[2]);
+  Quaternion q_accel(0, acc[0], acc[1], acc[2]);
   Quaternion q_accel_w = q_accel.rotate(q_new);
   q_accel_w.normalize();
 
-  double phi = acos(q_accel_w.q[2])*180/PI;
+  float phi = acos(q_accel_w.q[2])*180/PI;
   double nx = -q_accel_w.q[3];
   double nz = q_accel_w.q[1];
   double n = sqrt(sq(nx)+sq(nz));
