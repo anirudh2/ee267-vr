@@ -67,27 +67,22 @@ void updateQuaternionGyr(Quaternion& q, double gyr[3], double deltaT) {
 void updateQuaternionComp(Quaternion& q, double gyr[3], double acc[3], double deltaT, double alpha) {
   // q is the previous quaternion estimate
   // update it to be the new quaternion estimate
-  double norm_gyr = sqrt(sq(gyr[0])+sq(gyr[1])+sq(gyr[2]));
+  Quaternion q_new = q.clone();
 
-  if (norm_gyr > 1e-8)  {
-    gyr[0] = gyr[0]/norm_gyr;
-    gyr[1] = gyr[1]/norm_gyr;
-    gyr[2] = gyr[2]/norm_gyr;
-  }
+  updateQuaternionGyr(q_new, gyr, deltaT);
 
-  q = Quaternion().multiply(q,Quaternion().setFromAngleAxis(deltaT*norm_gyr, gyr[0],gyr[1],gyr[2]));
-  q.normalize();
+  Quaternion q_accel = Quaternion(0.0, acc[0], acc[1], acc[2]);
+  Quaternion q_accel_w = q_accel.rotate(q_new);
+  q_accel_w.normalize();
 
-  Quaternion q_acc = Quaternion(0, acc[0], acc[1], acc[2]);
-  Quaternion q_rot = q_acc.rotate(q);
+  double phi = acos(q_accel_w.q[2])*180.0/PI;
+  double nx = -q_accel_w.q[3];
+  double nz = q_accel_w.q[1];
+  double n = sqrt(sq(nx)+sq(nz));
+  nx /= n;
+  nz /= n;
 
-  q_rot.normalize();
+  Quaternion tilt = q.setFromAngleAxis((1-alpha)*phi, nx, 0.0, nz);
+  q = q.multiply(tilt, q_new);
 
-  double accel = (180.0/PI)*acos(q_rot.q[2]/q_rot.length());
-  double x_tilt = -q_rot.q[3]/sqrt(sq(q_rot.q[1]) + sq(q_rot.q[3]));
-  double z_tilt = -q_rot.q[1]/sqrt(sq(q_rot.q[1]) + sq(q_rot.q[3]));
-  Quaternion tilt = Quaternion().setFromAngleAxis((1-alpha)*accel, x_tilt, 0.0, z_tilt);
-  tilt.normalize();
-  q = Quaternion().multiply(tilt, q);
-  q.normalize();
 }
