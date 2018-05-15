@@ -62,9 +62,13 @@ bool solveForH(double A[8][8], double b[8], double hOut[8]) {
   //example:
   //int inv = Matrix.Invert((double*)A, 8);
   //if inverse fails (Invert returns 0), return false 
-  
 
-  return false;
+  int InversionSuccess = Matrix.Invert((double*)A, 8);
+  if (InversionSuccess == 0) {
+    return false;
+  }
+  Matrix.Multiply((double*)A,b,8,8,1,hOut);
+  return true;
 
 }
 

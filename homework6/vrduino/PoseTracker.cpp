@@ -84,11 +84,13 @@ int PoseTracker::updatePose() {
 
   double arr[8][8];
   formA(position2D, positionRef, arr);
-  
+
+  double hOut[8];
+  return solveForH(arr, position2D, hOut);
 
 
 
 
-  return 0;
+  //return 0;
 
 }
