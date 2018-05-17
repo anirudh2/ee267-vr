@@ -65,8 +65,8 @@ int PoseTracker::processLighthouse() {
  */
 int PoseTracker::updatePose() {
 
-  // call functions in PoseMath.cpp to get a new position 
-  // and orientation estimate. 
+  // call functions in PoseMath.cpp to get a new position
+  // and orientation estimate.
   //
   // you will need to use the following class variables:
   // - clockTicks
@@ -74,20 +74,35 @@ int PoseTracker::updatePose() {
   // - positionRef
   // - position
   // - quaternionHm
-  // 
+  //
   // - position and quaternionHm should hold the your position
   // and orientation estimates at the end of this function
   //
   // return 0 if errors occur, return 1 if successful
-  
+
   convertTicksTo2DPositions(clockTicks, position2D);
 
+  // Make the A matrix
   double arr[8][8];
   formA(position2D, positionRef, arr);
 
+  // Find hOut. If successful, return true
   double hOut[8];
-  return solveForH(arr, position2D, hOut);
+  bool h_succ = solveForH(arr, position2D, hOut);
 
+  // Find the rotation and translation matrices from h
+  double rot_Mat[3][3];
+  getRtFromH(hOut, rot_Mat, position);
+
+  // get normalized quaternion of rotation Matrix
+  quaternionHm = getQuaternionFromRotationMatrix(rot_Mat);
+  
+  // return 0 if solveforH returns false
+  if h_succ {
+    return 1;
+  } else {
+    return 0;
+  }
 
 
 
