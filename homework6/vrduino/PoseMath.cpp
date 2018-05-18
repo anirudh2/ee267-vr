@@ -9,11 +9,15 @@ void convertTicksTo2DPositions(uint32_t clockTicks[8], double pos2D[8])
   //for number of clock ticks a second
   for (int i = 0; i < 8; i += 2)
   {
-    double deltaT_h = clockTicks[i]/CLOCKS_PER_SECOND;
-    double azimuth_angle = -deltaT_h/((1.0/60.0)/360.0) + (360.0/4.0);
+    //Serial.println((double)CLOCKS_PER_SECOND);
+    //Serial.println((double)clockTicks[i]);
+    double deltaT_h = (double)clockTicks[i]/(double)CLOCKS_PER_SECOND;
+    //Serial.printf("%f\n",deltaT_h);
+    double azimuth_angle = -deltaT_h*21600.0 + 90.0;
     double x = tan(azimuth_angle*PI/180.0);
-    double deltaT_v = clockTicks[i+1]/CLOCKS_PER_SECOND;
-    double elevation_angle = deltaT_v/((1.0/60.0)/360.0) - (360.0/4.0);
+    double deltaT_v = (double)clockTicks[i+1]/(double)CLOCKS_PER_SECOND;
+    //Serial.printf("%f\n",deltaT_v);
+    double elevation_angle = deltaT_v*21600.0 - 90.0;
     double y = tan(elevation_angle*PI/180.0);
     pos2D[i] = x;
     pos2D[i+1] = y;
@@ -128,9 +132,9 @@ Quaternion getQuaternionFromRotationMatrix(double R[3][3]) {
 
   // Make unnormalized q estimation using Eq 39
   double qw_un = ( sqrt(1+R[0][0]+R[1][1]+R[3][3]) ) / 2;
-  double qx_un = ( r[2][1]-r[1][2] ) / ( 4*qw );
-  double qy_un = ( r[0][2]-r[2][0] ) / ( 4*qw );
-  double qz_un = ( r[1][0]-r[0][1] ) / ( 4*qw );
+  double qx_un = ( R[2][1]-R[1][2] ) / ( 4*qw_un );
+  double qy_un = ( R[0][2]-R[2][0] ) / ( 4*qw_un );
+  double qz_un = ( R[1][0]-R[0][1] ) / ( 4*qw_un );
 
   // Normalize and return
   double qw = qw_un / ( sqrt( sq(qw_un)+sq(qx_un)+sq(qy_un)+sq(qz_un) ) );

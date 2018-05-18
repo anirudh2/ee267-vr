@@ -98,7 +98,7 @@ int PoseTracker::updatePose() {
   quaternionHm = getQuaternionFromRotationMatrix(rot_Mat);
   
   // return 0 if solveforH returns false
-  if h_succ {
+  if (h_succ) {
     return 1;
   } else {
     return 0;

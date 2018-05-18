@@ -8,6 +8,7 @@
 
 #include "PoseMath.h"
 #include "TestUtil.h"
+#include "MatrixMath.h"
 
 bool testPose1();
 
