@@ -84,19 +84,21 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 
 	// add a grid object in the scene
 	var floor_width = 2000;
-	var sqGrid = new THREE.GridHelper( floor_width, 20, "gray", "gray" );
+	//color used to be gray
+	var sqGrid = new THREE.GridHelper( floor_width, 20, "yellow", "yellow" );
 
-	sqGrid.position.set( 0, - 1000, 0 );
+	sqGrid.position.set( 0, -400, 0 ); //was ( 0, - 1000, 0 )
 
 	sqGrid.rotation.y = 45 * THREE.Math.DEG2RAD;
 
 	scene.add( sqGrid );
 
-	// Overlay a plane over the grid for depth of field rendering
+	//Overlay a plane over the grid for depth of field rendering
 
 	var planeGeometry = new THREE.PlaneGeometry( floor_width, floor_width, 100, 100 );
 
-	var planeMaterial = new THREE.MeshBasicMaterial( { color: "blanchedalmond", side: THREE.DoubleSide } );
+	//color was blanchedalmond
+	var planeMaterial = new THREE.MeshBasicMaterial( { color: "black", side: THREE.DoubleSide } );
 
 	var plane = new THREE.Mesh( planeGeometry, planeMaterial );
 
@@ -106,32 +108,33 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 
 	plane.rotation.y = 0 * THREE.Math.DEG2RAD;
 
-	plane.rotation.z = 45 * THREE.Math.DEG2RAD;
+	plane.rotation.z = 180 * THREE.Math.DEG2RAD;
 
 	scene.add( plane );
 
 
 	// add a grid object in the scene
 	var w = 2000;
-	var sqGridBackRight = new THREE.GridHelper( w, 20, "gray", "gray" );
+	// var sqGridBackRight = new THREE.GridHelper( w, 20, "gray", "gray" );
 
 	var x_right = 600;
 	var y_right = 0;
 	var z_right = - 600;
 
 
-	sqGridBackRight.position.set( x_right, y_right, z_right );
+	// sqGridBackRight.position.set( x_right, y_right, z_right );
 
-	sqGridBackRight.rotation.x = 90 * THREE.Math.DEG2RAD;
+	// sqGridBackRight.rotation.x = 90 * THREE.Math.DEG2RAD;
 
-	sqGridBackRight.rotation.z = 45 * THREE.Math.DEG2RAD;
+	// sqGridBackRight.rotation.z = 45 * THREE.Math.DEG2RAD;
 
-	scene.add( sqGridBackRight );
+	// scene.add( sqGridBackRight );
 
 	// Overlay a plane over the grid for depth of field rendering
 	var planeGeometryBackRight = new THREE.PlaneGeometry( w, w, 10, 10 );
 
-	var planeMaterialBackRight = new THREE.MeshBasicMaterial( { color: "ivory", side: THREE.DoubleSide } );
+	//color used to be ivory
+	var planeMaterialBackRight = new THREE.MeshBasicMaterial( { color: "lightblue", side: THREE.DoubleSide } );
 
 	var planeBackRight = new THREE.Mesh( planeGeometryBackRight, planeMaterialBackRight );
 
@@ -147,20 +150,21 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 
 
 	// add a grid object in the scene
-	var sqGridBackLeft = new THREE.GridHelper( w, 20, "gray", "gray" );
+	//var sqGridBackLeft = new THREE.GridHelper( w, 20, "gray", "gray" );
 
-	sqGridBackLeft.position.set( - x_right, y_right, z_right );
+	// sqGridBackLeft.position.set( - x_right, y_right, z_right );
 
-	sqGridBackLeft.rotation.x = 90 * THREE.Math.DEG2RAD;
+	// sqGridBackLeft.rotation.x = 90 * THREE.Math.DEG2RAD;
 
-	sqGridBackLeft.rotation.z = - 45 * THREE.Math.DEG2RAD;
+	// sqGridBackLeft.rotation.z = - 45 * THREE.Math.DEG2RAD;
 
-	scene.add( sqGridBackLeft );
+	// scene.add( sqGridBackLeft );
 
 	// Overlay a plane over the grid for depth of field rendering
 	var planeGeometryBackLeft = new THREE.PlaneGeometry( w, w, 10, 10 );
 
-	var planeMaterialBackLeft = new THREE.MeshBasicMaterial( { color: "lightgreen", side: THREE.DoubleSide } );
+	//color used to be lightgreen
+	var planeMaterialBackLeft = new THREE.MeshBasicMaterial( { color: "lightblue", side: THREE.DoubleSide } );
 
 	var planeBackLeft = new THREE.Mesh( planeGeometryBackLeft, planeMaterialBackLeft );
 
@@ -176,8 +180,8 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 
 
 
-	// set the scene's background
-	scene.background = new THREE.Color( "gray" );
+	// set the scene's background - color used to be gray
+	scene.background = new THREE.Color( "lightblue" );
 
 	// set up three teapots in the scene
 	var meshes = [];
