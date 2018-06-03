@@ -134,32 +134,66 @@ var StateController = function ( dispParams ) {
 
 
 	function onMove( e, x, y ) {
+		//
+		// var ctrlKey = e.metaKey // for Mac's command key
+		// 	|| ( navigator.platform.toUpperCase().indexOf( "MAC" ) == - 1
+		// 		&& e.ctrlKey );
+		//
+		// // Check the mouse is clicked. If not, do nothing.
+		// if ( ! clickHold ) return;
+		//
+		// var movement = computeMovement( x, y, previousPosition );
+		//
+		// // Check if the shift-key is pressed
+		// if ( ! ctrlKey ) {
+		//
+		// 	// XY translation
+		// 	_this.state.modelRotation.x += movement.y;
+		//
+		// 	_this.state.modelRotation.y += movement.x;
+		//
+		// } else if ( ctrlKey ) {
+		//
+		// 	// Z translation
+		// 	_this.state.modelTranslation.z += movement.y;
+		//
+		// }
 
-		var ctrlKey = e.metaKey // for Mac's command key
-			|| ( navigator.platform.toUpperCase().indexOf( "MAC" ) == - 1
-				&& e.ctrlKey );
 
-		// Check the mouse is clicked. If not, do nothing.
-		if ( ! clickHold ) return;
+				var ctrlKey = e.metaKey // for Mac's command key
+					|| ( navigator.platform.toUpperCase().indexOf( "MAC" ) == - 1
+						&& e.ctrlKey );
 
-		var movement = computeMovement( x, y, previousPosition );
+				// Check the mouse is clicked. If not, do nothing.
+				if ( ! clickHold ) return;
 
-		// Check if the shift-key is pressed
-		if ( ! ctrlKey ) {
+				var movement = computeMovement( x, y, previousPosition );
 
-			// XY translation
-			_this.state.modelRotation.x += movement.y;
+				// Check if the shift-key is pressed
+				if ( ! ctrlKey ) {
 
-			_this.state.modelRotation.y += movement.x;
+					// XY translation
+					_this.state.modelRotation.x += movement.y;
 
-		} else if ( ctrlKey ) {
+					_this.state.modelRotation.y += movement.x;
 
-			// Z translation
-			_this.state.modelTranslation.z += movement.y;
+				} else if ( ctrlKey ) {
 
-		}
+					// Z translation
+					_this.state.modelTranslation.z += movement.y;
+
+			}
 
 	}
+
+	$( "html" ).keydown(function ( e ) {
+		if (e.keyCode == '37') {
+			_this.state.modelTranslation.x -= 500;
+		} else if (e.keyCode == '39') {
+			_this.state.modelTranslation.x += 500;
+		}
+	} );
+
 
 	$( "html" ).keydown( function ( e ) {
 
@@ -248,35 +282,35 @@ var StateController = function ( dispParams ) {
 
 
 
-	// Controller for the lens distortion parameter and head-and-neck model
-	$( "html" ).keydown( function ( e ) {
-
-		switch ( e.which ) {
-
-			case 50: // Increase alpha: Key 2
-
-				if ( _this.state.alphaPositionFilter <= 0.99 ) {
-
-					_this.state.alphaPositionFilter += 0.01;
-
-				}
-
-
-				break;
-
-			case 51: // Decrease alpha: Key 3
-
-				if ( _this.state.alphaPositionFilter >= .01 ) {
-
-					_this.state.alphaPositionFilter -= 0.01;
-
-				}
-
-				break;
-
-		}
-
-	} );
+	// // Controller for the lens distortion parameter and head-and-neck model
+	// $( "html" ).keydown( function ( e ) {
+	//
+	// 	switch ( e.which ) {
+	//
+	// 		case 50: // Increase alpha: Key 2
+	//
+	// 			if ( _this.state.alphaPositionFilter <= 0.99 ) {
+	//
+	// 				_this.state.alphaPositionFilter += 0.01;
+	//
+	// 			}
+	//
+	//
+	// 			break;
+	//
+	// 		case 51: // Decrease alpha: Key 3
+	//
+	// 			if ( _this.state.alphaPositionFilter >= .01 ) {
+	//
+	// 				_this.state.alphaPositionFilter -= 0.01;
+	//
+	// 			}
+	//
+	// 			break;
+	//
+	// 	}
+	//
+	// } );
 
 
 	function initWebSocket() {
