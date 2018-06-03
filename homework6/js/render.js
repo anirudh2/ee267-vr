@@ -68,35 +68,40 @@ webglRenderer.setSize( dispParams.canvasWidth, dispParams.canvasHeight );
 var teapots = [];
 
 var teapot1 =
-	new Teapot( new THREE.Vector3( - 500, 0, 0 ),
+	new Teapot( new THREE.Vector3( 0, -250, -400 ), //was ( - 500, 0, 0 )
 		$( "#vShaderMultiPhong" ).text(),
 		$( "#fShaderMultiPhong" ).text() );
 
 teapots.push( teapot1 );
 
-var teapot2 =
-	new Teapot( new THREE.Vector3( 0, - 350, 100 ),
-		$( "#vShaderMultiPhong" ).text(),
-		$( "#fShaderMultiPhong" ).text() );
+// var teapot2 =
+// 	new Teapot( new THREE.Vector3( 0, - 350, 100 ),
+// 		$( "#vShaderMultiPhong" ).text(),
+// 		$( "#fShaderMultiPhong" ).text() );
 
-teapots.push( teapot2 );
-
-
-var teapot3 =
-	new Teapot( new THREE.Vector3( 500, - 200, - 130 ),
-		$( "#vShaderMultiPhong" ).text(),
-		$( "#fShaderMultiPhong" ).text() );
-
-teapots.push( teapot3 );
-
-var teapot4 =
-	new Teapot( new THREE.Vector3( 0, 300, - 200 ),
-		$( "#vShaderMultiPhong" ).text(),
-		$( "#fShaderMultiPhong" ).text() );
-
-teapots.push( teapot4 );
+// teapots.push( teapot2 );
 
 
+// var teapot3 =
+// 	new Teapot( new THREE.Vector3( 500, - 200, - 130 ),
+// 		$( "#vShaderMultiPhong" ).text(),
+// 		$( "#fShaderMultiPhong" ).text() );
+
+// teapots.push( teapot3 );
+
+// var teapot4 =
+// 	new Teapot( new THREE.Vector3( 0, 300, - 200 ),
+// 		$( "#vShaderMultiPhong" ).text(),
+// 		$( "#fShaderMultiPhong" ).text() );
+
+// teapots.push( teapot4 );
+
+var road = [];
+
+var geometry = new THREE.PlaneGeometry( 5, 20, 32 );
+var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+var plane = new THREE.Mesh( geometry, material );
+//scene.add( plane );
 
 // Create an instance of our StateCoontroller class.
 // By using this class, we store the mouse movement to change the scence to be
