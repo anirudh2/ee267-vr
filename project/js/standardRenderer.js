@@ -155,7 +155,7 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 	var planeGeometryBackRight = new THREE.PlaneGeometry( w, w, 10, 10 );
 
 	//color used to be ivory
-	var planeMaterialBackRight = new THREE.MeshBasicMaterial( { color: "lightblue", side: THREE.DoubleSide } );
+	var planeMaterialBackRight = new THREE.MeshBasicMaterial( { color: 0x007FE1, side: THREE.DoubleSide } );
 
 	var planeBackRight = new THREE.Mesh( planeGeometryBackRight, planeMaterialBackRight );
 
@@ -185,7 +185,7 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 	var planeGeometryBackLeft = new THREE.PlaneGeometry( w, w, 10, 10 );
 
 	//color used to be lightgreen
-	var planeMaterialBackLeft = new THREE.MeshBasicMaterial( { color: "lightblue", side: THREE.DoubleSide } );
+	var planeMaterialBackLeft = new THREE.MeshBasicMaterial( { color: 0x007FE1, side: THREE.DoubleSide } );
 
 	var planeBackLeft = new THREE.Mesh( planeGeometryBackLeft, planeMaterialBackLeft );
 
@@ -202,7 +202,7 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 
 
 	// set the scene's background - color used to be gray
-	scene.background = new THREE.Color( "lightblue" );
+	scene.background = new THREE.Color( 0x007FE1 );
 
 	// set up three teapots in the scene
 	var meshes = [];
