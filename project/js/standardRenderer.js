@@ -124,7 +124,7 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 	//cube.rotateX(0.25*Math.PI);
 	//cube.translateX(900);
 	//cube.rotateX(0.25*Math.PI);
-	cube.translateY(-1200); //works with -1000
+	cube.translateY(-1000); //works with -1000
 	//cube.translateX(200);
 	cube.translateZ(-300); //works with -400
 	//cube.rotation.x = Math.PI/4;
