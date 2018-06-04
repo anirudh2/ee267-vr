@@ -117,7 +117,7 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 	// scene.add(light);
 	// var light2 = new THREE.PointLight(0xffffff, 0.5);
 	// scene.add(light2);
-	var geometry = new THREE.BoxGeometry( 3000, 1000, 10000 );
+	var geometry = new THREE.BoxGeometry( 3000, 1000, 10000 ); //was 3000, 1000, 10000
 	var material = new THREE.MeshLambertMaterial( {color: "gray"} ); //THREE.MeshBasicMaterial( {color: "black"} );
 	var cube = new THREE.Mesh( geometry, material );
 	//cube.rotation.x = Math.PI/4;
