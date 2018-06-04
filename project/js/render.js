@@ -171,7 +171,7 @@ animate();
 var counter = 0;
 function animate() {
 
-	if ((counter % 50) == 0) {
+	if ((counter % 100) == 0) {
 		if (Math.floor((Math.random() * 10) + 1) < 4) {
 			makeTeapot(100, true);
 		} else if (Math.floor((Math.random() * 10) + 1) > 7) {
