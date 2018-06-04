@@ -68,13 +68,15 @@ webglRenderer.setSize( dispParams.canvasWidth, dispParams.canvasHeight );
 var teapots = [];
 
 var teapot1 =
-	new Teapot( new THREE.Vector3( 0, -450, -30 ), //was 0, -350, -400 was ( - 500, 0, 0 )
+	new Teapot( new THREE.Vector3( 0, -450, 0 ), //was 0, -350, -400 was ( - 500, 0, 0 )
 		$( "#vShaderMultiPhong" ).text(),
-		$( "#fShaderMultiPhong" ).text() );
+		$( "#fShaderMultiPhong" ).text(),
+	 0.75);
 
 teapots.push( teapot1 );
 makeTeapot(0,true, false);
 makeTeapot(100,false, true);
+makeTeapot(0, false, false);
 
 
 function makeTeapot(wait, isLeft, isRight) {
@@ -82,21 +84,24 @@ function makeTeapot(wait, isLeft, isRight) {
 	function makeNew() {
 		if (isLeft && !isRight) {
 			var teapot2 =
-				new Teapot( new THREE.Vector3( -500, 100, -250 ), //was ( - 500, 0, 0 )
+				new Teapot( new THREE.Vector3( -1, 100, -100 ), //was ( - 500, 0, 0 )
 					$( "#vShaderMultiPhong" ).text(),
-					$( "#fShaderMultiPhong" ).text() );
+					$( "#fShaderMultiPhong" ).text(),
+				0.075 );
 			teapots.push(teapot2);
 		} else if (!isLeft && isRight) {
 				var teapot2 =
-				new Teapot( new THREE.Vector3( 500, 100, -250 ), //was ( - 500, 0, 0 )
+				new Teapot( new THREE.Vector3( 1, 100, -100 ), //was ( - 500, 0, 0 )
 					$( "#vShaderMultiPhong" ).text(),
-					$( "#fShaderMultiPhong" ).text() );
+					$( "#fShaderMultiPhong" ).text(),
+					0.075 );
 				teapots.push(teapot2);
 		} else {
 				var teapot2 =
-				new Teapot( new THREE.Vector3( 0, 100, -250 ), //was ( - 500, 0, 0 )
+				new Teapot( new THREE.Vector3( 0, 100, -100 ), //was ( - 500, 0, 0 )
 					$( "#vShaderMultiPhong" ).text(),
-					$( "#fShaderMultiPhong" ).text() );
+					$( "#fShaderMultiPhong" ).text(),
+				0.075 );
 				teapots.push(teapot2);
 		}
 	}
@@ -148,7 +153,6 @@ var stereoUnwarpRenderer =
 // Instanciate our MVPmat class
 var mat = new MVPmat( dispParams );
 
-
 // Start rendering!
 animate();
 
@@ -177,7 +181,7 @@ animate();
 var counter = 0;
 function animate() {
 
-	if ((counter % 250) == 0) {
+	if ((counter % 100) == 0) {
 		var curr_rand = Math.floor((Math.random() * 10) + 1);
 		if (curr_rand < 3) {
 			makeTeapot(0, true,false);
@@ -190,17 +194,36 @@ function animate() {
 	counter++;
 
 	for (var i = 1; i < teapots.length; i++) {
-		teapots[i].position.y -= 1;
-		teapots[i].position.z += 1;
-		if (teapots[i].position.z == 500) {
+		if (teapots[i].position.x < 0) {
+			teapots[i].position.x -= 2*0.91;
+			teapots[i].position.y -= 2;
+			teapots[i].weight += 2*0.00122727272;
+		} else if (teapots[i].position.x > 0) {
+			teapots[i].position.x += 2*0.91;
+			teapots[i].position.y -= 2;
+			teapots[i].weight += 2*0.00122727272;
+		} else {
+			teapots[i].position.y -= 2;
+			teapots[i].weight += 2*0.00122727272;
+		}
+		if (teapots[i].position.y == -500) {
 			teapots.splice(i,1);
 		}
 	}
 	var standardRenderer =
 		new StandardRenderer( webglRenderer, teapots, dispParams );
 
-	requestAnimationFrame( animate );
+	curr_id = requestAnimationFrame( animate );
 
+	// if (teapots.length > 1) {
+	// 	cancelAnimationFrame(curr_id);
+	// }
+	for (var i = 1; i < teapots.length; i++) {
+		if ((teapots[0].position.x == teapots[i].position.x)
+		&& Math.abs(teapots[0].position.y-teapots[i].position.y) < 15) {
+			cancelAnimationFrame(curr_id);
+		}
+	}
 	// Start performance monitoring
 	stats.begin();
 

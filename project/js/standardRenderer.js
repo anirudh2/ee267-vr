@@ -369,8 +369,10 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 				var _modelMat =
 					new THREE.Matrix4().multiplyMatrices( positionTranslation, modelMat );
 			} else {
+				var scaleMat = new THREE.Matrix4().makeScale(teapots[i].weight,teapots[i].weight,teapots[i].weight);
+				var tempMat = new THREE.Matrix4().multiplyMatrices(scaleMat, scrollModelMat);
 				var _modelMat =
-					new THREE.Matrix4().multiplyMatrices( positionTranslation, scrollModelMat );
+					new THREE.Matrix4().multiplyMatrices( positionTranslation, tempMat );
 			}
 			var modelViewMat =
 				new THREE.Matrix4().multiplyMatrices( viewMat, _modelMat );

@@ -16,7 +16,7 @@
  * @param  {string} vShader  vertex shader
  * @param  {string} fShader  fragment shader
  */
-var Teapot = function ( position, vShader, fShader ) {
+var Teapot = function ( position, vShader, fShader, weight ) {
 
 	// TeapotBufferGeometry creates the set of vertex's coordinates of a teapot
 	// See js/libs/TeapotBufferGeometry.js for details.
@@ -28,5 +28,7 @@ var Teapot = function ( position, vShader, fShader ) {
 	this.vertexShader = vShader;
 
 	this.fragmentShader = fShader;
+
+	this.weight = weight;
 
 };

@@ -95,6 +95,9 @@ var StateController = function ( dispParams ) {
 
 	var socket = null;
 
+	// Make sure player doesn't go off the road
+	var curr_sum = 0;
+
 	initWebSocket();
 
 
@@ -187,11 +190,35 @@ var StateController = function ( dispParams ) {
 	}
 
 	$( "html" ).keydown(function ( e ) {
-		if (e.keyCode == '37') {
-			_this.state.modelTranslation.x -= 500;
-		} else if (e.keyCode == '39') {
-			_this.state.modelTranslation.x += 500;
+		var shift = 500;
+		if (curr_sum == shift) {
+			if (e.keyCode == '37') {
+				_this.state.modelTranslation.x -= shift;
+				curr_sum -= shift;
+			}
 		}
+		if (curr_sum == 0) {
+			if (e.keyCode == '37') {
+					_this.state.modelTranslation.x -= shift;
+					curr_sum -= shift;
+				} else if (e.keyCode == '39') {
+					_this.state.modelTranslation.x += shift;
+					curr_sum += shift;
+				}
+			}
+		if (curr_sum == -shift) {
+			if (e.keyCode == '39') {
+				_this.state.modelTranslation.x += shift;
+				curr_sum += shift;
+			}
+		}
+		// } else {
+		// 	if (e.keyCode == '37') {
+		// 		_this.state.modelTranslation.x -= -455;
+		// 	} else if (e.keyCode == '39') {
+		// 		_this.state.modelTranslation.x += 455;
+		// 	}
+		// }
 	} );
 
 

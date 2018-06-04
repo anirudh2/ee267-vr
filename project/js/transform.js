@@ -44,10 +44,10 @@ var MVPmat = function ( dispParams ) {
 
 			var modelRotation = state.modelRotation;
 
-			var scaleMat = new THREE.Matrix4().makeScale(0.75,0.75,0.75);
+			// var scaleMat = new THREE.Matrix4().makeScale(0.75,0.75,0.75);
 
-			var translationMat
-				= new THREE.Matrix4().makeTranslation(0, 0, 0);
+			// var translationMat
+			// 	= new THREE.Matrix4().makeTranslation(0, 0, 0);
 
 			var rotationMatX =
 				new THREE.Matrix4().makeRotationX(
@@ -60,9 +60,9 @@ var MVPmat = function ( dispParams ) {
 				//was Y X trans from top to bottom
 			var modelMatrix = new THREE.Matrix4().
 				premultiply( rotationMatY ).
-				premultiply( rotationMatX ).
-				premultiply(scaleMat).
-				premultiply( translationMat );
+				premultiply( rotationMatX );//.
+				// premultiply(scaleMat).
+				// premultiply( translationMat );
 
 			return modelMatrix;
 	}
