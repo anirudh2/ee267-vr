@@ -68,7 +68,7 @@ webglRenderer.setSize( dispParams.canvasWidth, dispParams.canvasHeight );
 var teapots = [];
 
 var teapot1 =
-	new Teapot( new THREE.Vector3( 0, -250, -400 ), //was ( - 500, 0, 0 )
+	new Teapot( new THREE.Vector3( 0, -350, -400 ), //was ( - 500, 0, 0 )
 		$( "#vShaderMultiPhong" ).text(),
 		$( "#fShaderMultiPhong" ).text() );
 

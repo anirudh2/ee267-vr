@@ -85,32 +85,53 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 	// add a grid object in the scene
 	var floor_width = 2000;
 	//color used to be gray
-	var sqGrid = new THREE.GridHelper( floor_width, 20, "yellow", "yellow" );
+	// var sqGrid = new THREE.GridHelper( floor_width, 20, "yellow", "yellow" );
 
-	sqGrid.position.set( 0, -400, 0 ); //was ( 0, - 1000, 0 )
+	// sqGrid.position.set( 0, -400, 0 ); //was ( 0, - 1000, 0 )
 
-	sqGrid.rotation.y = 45 * THREE.Math.DEG2RAD;
+	// sqGrid.rotation.y = 45 * THREE.Math.DEG2RAD;
 
-	scene.add( sqGrid );
+	// scene.add( sqGrid );
 
 	//Overlay a plane over the grid for depth of field rendering
 
 	var planeGeometry = new THREE.PlaneGeometry( floor_width, floor_width, 100, 100 );
 
 	//color was blanchedalmond
-	var planeMaterial = new THREE.MeshBasicMaterial( { color: "black", side: THREE.DoubleSide } );
+	// var planeMaterial = new THREE.MeshBasicMaterial( { color: "black", side: THREE.DoubleSide } );
 
-	var plane = new THREE.Mesh( planeGeometry, planeMaterial );
+	// var plane = new THREE.Mesh( planeGeometry, planeMaterial );
 
-	plane.position.set( 0, - 1000.1, 0 );
+	// plane.position.set( 0, - 500.1, 0 ); //was 0, - 1000.1, 0 
 
-	plane.rotation.x = 90 * THREE.Math.DEG2RAD;
+	// plane.rotation.x = 90 * THREE.Math.DEG2RAD;
 
-	plane.rotation.y = 0 * THREE.Math.DEG2RAD;
+	// plane.rotation.y = 0 * THREE.Math.DEG2RAD;
 
-	plane.rotation.z = 180 * THREE.Math.DEG2RAD;
+	// plane.rotation.z = 45 * THREE.Math.DEG2RAD;
 
-	scene.add( plane );
+	// scene.add( plane );
+
+
+	// var light = new THREE.AmbientLight(0xffffff, 0.5);
+	// scene.add(light);
+	// var light2 = new THREE.PointLight(0xffffff, 0.5);
+	// scene.add(light2);
+	var geometry = new THREE.BoxGeometry( 3000, 1000, 10000 );
+	var material = new THREE.MeshLambertMaterial( {color: "gray"} ); //THREE.MeshBasicMaterial( {color: "black"} );
+	var cube = new THREE.Mesh( geometry, material );
+	//cube.rotation.x = Math.PI/4;
+	//cube.rotateX(0.25*Math.PI);
+	//cube.translateX(900);
+	//cube.rotateX(0.25*Math.PI);
+	cube.translateY(-1200); //works with -1000
+	//cube.translateX(200);
+	cube.translateZ(-300); //works with -400
+	//cube.rotation.x = Math.PI/4;
+	cube.rotateX(0.18*Math.PI); // works with 0.18*Math.PI
+	
+	scene.add( cube );
+
 
 
 	// add a grid object in the scene
