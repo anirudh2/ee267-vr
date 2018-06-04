@@ -241,11 +241,11 @@ function animate() {
 
 		// Render for the left eye on frame buffer object
 		standardRenderer.renderOnTarget( stereoUnwarpRenderer.renderTargetL,
-			sc.state, mat.modelMat, mat.stereoViewMat.L, mat.stereoProjectionMat.L );
+			sc.state, mat.modelMat, mat.stereoViewMat.L, mat.stereoProjectionMat.L, mat.scrollModelMat );
 
 		// Render for the right eye on frame buffer object
 		standardRenderer.renderOnTarget( stereoUnwarpRenderer.renderTargetR,
-			sc.state, mat.modelMat, mat.stereoViewMat.R, mat.stereoProjectionMat.R );
+			sc.state, mat.modelMat, mat.stereoViewMat.R, mat.stereoProjectionMat.R, mat.scrollModelMat );
 
 		stereoUnwarpRenderer.render( sc.state );
 

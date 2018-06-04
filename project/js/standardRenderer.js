@@ -154,7 +154,7 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 
 	// // Create a 3d plane.
 	// var plane = new THREE.Mesh(new THREE.PlaneGeometry(64,64));
-	
+
 	// // Returns random position value which does not get too close to the camera.
 	// function ranCloud() {
 	// 	val = Math.random()*2000-100;
@@ -178,21 +178,21 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 	// 	});
 	// 	// Create sprite.
 	// 	var sprite = new THREE.Sprite(cloudMat);
-		
+
 	// 	// Randomize sprite position.
 	// 	sprite.position.set(ranCloud(), ranCloud()*.4, ranCloud());
 
 	// 	// Randomize sprite scale.
 	// 	var scale = Math.random()*500;
 	// 	sprite.scale.set(scale, scale, scale);
-		
+
 	// 	// Randomize sprite rotation.
 	// 	sprite.rotation = Math.random()*360;
-		
+
 	// 	// Add the sprite to the scene.
 	// 	scene.add(sprite);
 	// }
-	
+
 	// // Create a mesh
 	// mesh = new THREE.Mesh(geometry, material);
 	// mesh.position.z = 1000;
@@ -356,7 +356,7 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 	// viewMat: view matrix
 	// projectionMat: projection matrix
 	function updateUniforms(
-		state, modelMat, viewMat, projectionMat ) {
+		state, modelMat, viewMat, projectionMat, scrollModelMat ) {
 
 		var lights = state.lights;
 
@@ -365,9 +365,13 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 			// Translate a teapot based on its initial position.
 			var positionTranslation = new THREE.Matrix4().makeTranslation( teapots[ i ].position.x, teapots[ i ].position.y, teapots[ i ].position.z );
 
-			var _modelMat =
-				new THREE.Matrix4().multiplyMatrices( positionTranslation, modelMat );
-
+			if (i == 0) {
+				var _modelMat =
+					new THREE.Matrix4().multiplyMatrices( positionTranslation, modelMat );
+			} else {
+				var _modelMat =
+					new THREE.Matrix4().multiplyMatrices( positionTranslation, scrollModelMat );
+			}
 			var modelViewMat =
 				new THREE.Matrix4().multiplyMatrices( viewMat, _modelMat );
 
@@ -504,9 +508,9 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 	// viewMat: view matrix
 	// projectionMat: projection matrix
 	this.renderOnTarget = function (
-		renderTarget, state, modelMat, viewMat, projectionMat ) {
+		renderTarget, state, modelMat, viewMat, projectionMat, scrollModelMat) {
 
-		updateUniforms( state, modelMat, viewMat, projectionMat );
+		updateUniforms( state, modelMat, viewMat, projectionMat, scrollModelMat);
 
 		webglRenderer.render( scene, camera, renderTarget, true );
 
