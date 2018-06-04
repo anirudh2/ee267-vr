@@ -73,19 +73,22 @@ var teapot1 =
 		$( "#fShaderMultiPhong" ).text() );
 
 teapots.push( teapot1 );
+makeTeapot(0,true);
+makeTeapot(100,false);
+
 
 function makeTeapot(wait, isLeft) {
 	setTimeout(makeNew, wait);
 	function makeNew() {
 		if (isLeft) {
 		var teapot2 =
-			new Teapot( new THREE.Vector3( -500, 0, 0 ), //was ( - 500, 0, 0 )
+			new Teapot( new THREE.Vector3( -500, 100, -250 ), //was ( - 500, 0, 0 )
 				$( "#vShaderMultiPhong" ).text(),
 				$( "#fShaderMultiPhong" ).text() );
 		teapots.push(teapot2);
 		} else {
 			var teapot2 =
-			new Teapot( new THREE.Vector3( 500, 0, 0 ), //was ( - 500, 0, 0 )
+			new Teapot( new THREE.Vector3( 500, 100, -250 ), //was ( - 500, 0, 0 )
 				$( "#vShaderMultiPhong" ).text(),
 				$( "#fShaderMultiPhong" ).text() );
 			teapots.push(teapot2);
@@ -168,14 +171,22 @@ animate();
 var counter = 0;
 function animate() {
 
-	if ((counter % 10000) == 0) {
-		if (Math.floor((Math.random() * 10) + 1) < 3) {
+	if ((counter % 50) == 0) {
+		if (Math.floor((Math.random() * 10) + 1) < 4) {
 			makeTeapot(100, true);
-		} else if (Math.floor((Math.random() * 10) + 1) > 8) {
+		} else if (Math.floor((Math.random() * 10) + 1) > 7) {
 			makeTeapot(100, false);
 		}
 	}
 	counter++;
+
+	for (var i = 1; i < teapots.length; i++) {
+		teapots[i].position.y -= 1;
+		teapots[i].position.z += 1;
+		if (teapots[i].position.z == 500) {
+			teapots.splice(i,1);
+		}
+	}
 	var standardRenderer =
 		new StandardRenderer( webglRenderer, teapots, dispParams );
 
