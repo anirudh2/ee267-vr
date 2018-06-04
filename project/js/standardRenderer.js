@@ -102,7 +102,7 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 
 	// var plane = new THREE.Mesh( planeGeometry, planeMaterial );
 
-	// plane.position.set( 0, - 500.1, 0 ); //was 0, - 1000.1, 0 
+	// plane.position.set( 0, - 500.1, 0 ); //was 0, - 1000.1, 0
 
 	// plane.rotation.x = 90 * THREE.Math.DEG2RAD;
 
@@ -129,7 +129,7 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 	cube.translateZ(-300); //works with -400
 	//cube.rotation.x = Math.PI/4;
 	cube.rotateX(0.18*Math.PI); // works with 0.18*Math.PI
-	
+
 	scene.add( cube );
 
 

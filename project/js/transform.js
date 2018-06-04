@@ -20,6 +20,7 @@ var MVPmat = function ( dispParams ) {
 	// Alias for acceccing this from a closure
 	var _this = this;
 
+	this.scrollModelMat = new THREE.Matrix4();
 
 	this.modelMat = new THREE.Matrix4();
 
@@ -38,6 +39,33 @@ var MVPmat = function ( dispParams ) {
 
 
 	/* Private functions */
+
+	function computeScrollModelTransform( state ) {
+
+			var modelRotation = state.modelRotation;
+
+			var scaleMat = new THREE.Matrix4().makeScale(0.75,0.75,0.75);
+
+			var translationMat
+				= new THREE.Matrix4().makeTranslation(0, 0, 0);
+
+			var rotationMatX =
+				new THREE.Matrix4().makeRotationX(
+					modelRotation.x * THREE.Math.DEG2RAD );
+
+			var rotationMatY =
+				new THREE.Matrix4().makeRotationY(
+					modelRotation.y * THREE.Math.DEG2RAD );
+
+				//was Y X trans from top to bottom
+			var modelMatrix = new THREE.Matrix4().
+				premultiply( rotationMatY ).
+				premultiply( rotationMatX ).
+				premultiply(scaleMat).
+				premultiply( translationMat );
+
+			return modelMatrix;
+	}
 
 	// A function to compute a model transform matrix
 	function computeModelTransform( state ) {
@@ -142,6 +170,9 @@ var MVPmat = function ( dispParams ) {
 		var clipNear = state.clipNear;
 
 		var clipFar = state.clipFar;
+
+		// Compute scroll model matrix
+		this.scrollModelMat = computeScrollModelTransform( state );
 
 		// Compute model matrix
 		this.modelMat = computeModelTransform( state );
