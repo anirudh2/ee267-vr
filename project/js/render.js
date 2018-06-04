@@ -74,6 +74,25 @@ var teapot1 =
 
 teapots.push( teapot1 );
 
+function makeTeapot(wait, isLeft) {
+	setTimeout(makeNew, wait);
+	function makeNew() {
+		if (isLeft) {
+		var teapot2 =
+			new Teapot( new THREE.Vector3( -500, 0, 0 ), //was ( - 500, 0, 0 )
+				$( "#vShaderMultiPhong" ).text(),
+				$( "#fShaderMultiPhong" ).text() );
+		teapots.push(teapot2);
+		} else {
+			var teapot2 =
+			new Teapot( new THREE.Vector3( 500, 0, 0 ), //was ( - 500, 0, 0 )
+				$( "#vShaderMultiPhong" ).text(),
+				$( "#fShaderMultiPhong" ).text() );
+			teapots.push(teapot2);
+		}
+	}
+}
+
 // var teapot2 =
 // 	new Teapot( new THREE.Vector3( 0, - 350, 100 ),
 // 		$( "#vShaderMultiPhong" ).text(),
@@ -146,7 +165,19 @@ animate();
 // If you are interested, plase check out the documentation of
 // requestAnimationFrame().
 // https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
+var counter = 0;
 function animate() {
+
+	if ((counter % 10000) == 0) {
+		if (Math.floor((Math.random() * 10) + 1) < 3) {
+			makeTeapot(100, true);
+		} else if (Math.floor((Math.random() * 10) + 1) > 8) {
+			makeTeapot(100, false);
+		}
+	}
+	counter++;
+	var standardRenderer =
+		new StandardRenderer( webglRenderer, teapots, dispParams );
 
 	requestAnimationFrame( animate );
 
