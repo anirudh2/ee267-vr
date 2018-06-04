@@ -132,6 +132,77 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 	
 	scene.add( cube );
 
+	// var texturefog = THREE.ImageUtils.loadTexture('textures/cloud.png', null, animate);
+	// //var texturefog = THREE.ImageUtils.loadTexture('textures/cloud.png');
+	// //var texturefog = THREE.TextureLoader().load('textures/cloud.png');
+	// texturefog.magFilter = THREE.LinearMipMapLinearFilter;
+	// texturefog.minFilter = THREE.LinearMipMapLinearFilter;
+	// // Create a blue fog.
+	// var fog = new THREE.Fog(0x3390ed, -100, 5000);
+
+	// material2 = new THREE.ShaderMaterial({
+	// 	uniforms: {
+	// 		"map": { type: "t", value: texturefog },
+	// 		"fogColor" : { type: "c", value: fog.color },
+	// 		"fogNear" : { type: "f", value: fog.near },
+	// 		"fogFar" : { type: "f", value: fog.far },
+	// 	},
+	// 	depthWrite: false,
+	// 	depthTest: false,
+	// 	transparent: true
+	// });
+
+	// // Create a 3d plane.
+	// var plane = new THREE.Mesh(new THREE.PlaneGeometry(64,64));
+	
+	// // Returns random position value which does not get too close to the camera.
+	// function ranCloud() {
+	// 	val = Math.random()*2000-100;
+	// 	while(val > 900 && val < 1100){
+	// 		ranCloud();
+	// 	}
+	// 	return val;
+	// }
+
+	// // Randomly generate clouds.
+	// for (var i = 0; i < 600; i++) {
+	// 	// Load texture.
+	// 	var cloudTex = THREE.ImageUtils.loadTexture('textures/cloud.png');
+	// 	// Create material.
+	// 	var cloudMat = new THREE.SpriteMaterial({
+	// 		map: cloudTex,
+	// 		//useScreenCoordinates: false,
+	// 		//alignment: THREE.SpriteAlignment.topLeft,
+	// 		transparent:true,
+	// 		opacity:Math.random()*.9+.1
+	// 	});
+	// 	// Create sprite.
+	// 	var sprite = new THREE.Sprite(cloudMat);
+		
+	// 	// Randomize sprite position.
+	// 	sprite.position.set(ranCloud(), ranCloud()*.4, ranCloud());
+
+	// 	// Randomize sprite scale.
+	// 	var scale = Math.random()*500;
+	// 	sprite.scale.set(scale, scale, scale);
+		
+	// 	// Randomize sprite rotation.
+	// 	sprite.rotation = Math.random()*360;
+		
+	// 	// Add the sprite to the scene.
+	// 	scene.add(sprite);
+	// }
+	
+	// // Create a mesh
+	// mesh = new THREE.Mesh(geometry, material);
+	// mesh.position.z = 1000;
+	// scene.add(mesh);
+
+	// // Lastly, create a renderer to display our scene.
+	// renderer = new THREE.WebGLRenderer({ antialias: false });
+	// renderer.setSize(window.innerWidth, window.innerHeight);
+	// container.appendChild(renderer.domElement);
+
 
 
 	// add a grid object in the scene
