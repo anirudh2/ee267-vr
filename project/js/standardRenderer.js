@@ -37,7 +37,7 @@
  * @param  {Array.<Teapot>} teapots       array of Teapot
  * @param  {DisplayParameters} dispParams    display parameters
  */
-var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
+var StandardRenderer = function ( webglRenderer, teapots, dispParams, gameOver ) {
 
 	// Alias for acceccing this from a closure
 	var _this = this;
@@ -222,23 +222,7 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 
 	// scene.add( sqGridBackRight );
 
-	// Overlay a plane over the grid for depth of field rendering
-	var planeGeometryBackRight = new THREE.PlaneGeometry( w, w, 10, 10 );
-
-	//color used to be ivory
-	var planeMaterialBackRight = new THREE.MeshBasicMaterial( { color: 0x007FE1, side: THREE.DoubleSide } );
-
-	var planeBackRight = new THREE.Mesh( planeGeometryBackRight, planeMaterialBackRight );
-
-	planeBackRight.position.set( x_right, y_right, z_right - 1 );
-
-	planeBackRight.rotation.x = 0 * THREE.Math.DEG2RAD;
-
-	planeBackRight.rotation.y = - 45 * THREE.Math.DEG2RAD;
-
-	planeBackRight.rotation.z = 0 * THREE.Math.DEG2RAD;
-
-	scene.add( planeBackRight );
+	
 
 
 	// add a grid object in the scene
@@ -252,28 +236,93 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 
 	// scene.add( sqGridBackLeft );
 
-	// Overlay a plane over the grid for depth of field rendering
-	var planeGeometryBackLeft = new THREE.PlaneGeometry( w, w, 10, 10 );
+	if (!gameOver) {
 
-	//color used to be lightgreen
-	var planeMaterialBackLeft = new THREE.MeshBasicMaterial( { color: 0x007FE1, side: THREE.DoubleSide } );
+		// Overlay a plane over the grid for depth of field rendering
+		var planeGeometryBackRight = new THREE.PlaneGeometry( w, w, 10, 10 );
 
-	var planeBackLeft = new THREE.Mesh( planeGeometryBackLeft, planeMaterialBackLeft );
+		//color used to be ivory
+		var planeMaterialBackRight = new THREE.MeshBasicMaterial( { color: 0x007FE1, side: THREE.DoubleSide } );
 
-	planeBackLeft.position.set( - x_right, y_right, z_right - 1 );
+		var planeBackRight = new THREE.Mesh( planeGeometryBackRight, planeMaterialBackRight );
 
-	planeBackLeft.rotation.x = 0 * THREE.Math.DEG2RAD;
+		planeBackRight.position.set( x_right, y_right, z_right - 1 );
 
-	planeBackLeft.rotation.y = 45 * THREE.Math.DEG2RAD;
+		planeBackRight.rotation.x = 0 * THREE.Math.DEG2RAD;
 
-	planeBackLeft.rotation.z = 0 * THREE.Math.DEG2RAD;
+		planeBackRight.rotation.y = - 45 * THREE.Math.DEG2RAD;
 
-	scene.add( planeBackLeft );
+		planeBackRight.rotation.z = 0 * THREE.Math.DEG2RAD;
+
+		scene.add( planeBackRight );
+
+		// Overlay a plane over the grid for depth of field rendering
+		var planeGeometryBackLeft = new THREE.PlaneGeometry( w, w, 10, 10 );
+
+		//color used to be lightgreen
+		var planeMaterialBackLeft = new THREE.MeshBasicMaterial( { color: 0x007FE1, side: THREE.DoubleSide } );
+
+		var planeBackLeft = new THREE.Mesh( planeGeometryBackLeft, planeMaterialBackLeft );
+
+		planeBackLeft.position.set( - x_right, y_right, z_right - 1 );
+
+		planeBackLeft.rotation.x = 0 * THREE.Math.DEG2RAD;
+
+		planeBackLeft.rotation.y = 45 * THREE.Math.DEG2RAD;
+
+		planeBackLeft.rotation.z = 0 * THREE.Math.DEG2RAD;
+
+		scene.add( planeBackLeft );
 
 
 
-	// set the scene's background - color used to be gray
-	scene.background = new THREE.Color( 0x007FE1 );
+		// set the scene's background - color used to be gray
+		scene.background = new THREE.Color( 0x007FE1 );
+
+	} else {
+
+		// Overlay a plane over the grid for depth of field rendering
+		var planeGeometryBackRight = new THREE.PlaneGeometry( w, w, 10, 10 );
+
+		//color used to be ivory
+		var planeMaterialBackRight = new THREE.MeshBasicMaterial( { color: "red", side: THREE.DoubleSide } );
+
+		var planeBackRight = new THREE.Mesh( planeGeometryBackRight, planeMaterialBackRight );
+
+		planeBackRight.position.set( x_right, y_right, z_right - 1 );
+
+		planeBackRight.rotation.x = 0 * THREE.Math.DEG2RAD;
+
+		planeBackRight.rotation.y = - 45 * THREE.Math.DEG2RAD;
+
+		planeBackRight.rotation.z = 0 * THREE.Math.DEG2RAD;
+
+		scene.add( planeBackRight );
+
+		//console.log("yeahhhh");
+		// Overlay a plane over the grid for depth of field rendering
+		var planeGeometryBackLeft = new THREE.PlaneGeometry( w, w, 10, 10 );
+
+		//color used to be lightgreen
+		var planeMaterialBackLeft = new THREE.MeshBasicMaterial( { color: "red", side: THREE.DoubleSide } );
+
+		var planeBackLeft = new THREE.Mesh( planeGeometryBackLeft, planeMaterialBackLeft );
+
+		planeBackLeft.position.set( - x_right, y_right, z_right - 1 );
+
+		planeBackLeft.rotation.x = 0 * THREE.Math.DEG2RAD;
+
+		planeBackLeft.rotation.y = 45 * THREE.Math.DEG2RAD;
+
+		planeBackLeft.rotation.z = 0 * THREE.Math.DEG2RAD;
+
+		scene.add( planeBackLeft );
+
+
+
+		// set the scene's background - color used to be gray
+		scene.background = new THREE.Color( "red" );
+	}
 
 	// set up three teapots in the scene
 	var meshes = [];
@@ -359,6 +408,7 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 		state, modelMat, viewMat, projectionMat, scrollModelMat ) {
 
 		var lights = state.lights;
+		//var lightstwo = state.lightstwo;
 
 		for ( var i = 0; i < teapots.length; i ++ ) {
 
@@ -417,6 +467,69 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 				meshes[ i ].material.needsUpdate = true;
 
 			}
+
+
+			// if (i > 0) {
+
+			// 	meshes[ i ].material.uniforms.pointLights.value = lights.pointLights;
+
+			// 	meshes[ i ].material.uniforms.directionalLights.value = lights.directionalLights;
+
+			// 	meshes[ i ].material.uniforms.ambientLightColor.value = lights.ambientLightColor;
+
+			// 	meshes[ i ].material.uniforms.attenuation.value = state.attenuation;
+
+			// 	meshes[ i ].material.uniforms.material.value = state.material;
+
+
+			// 	// Update the shaders based on the number of existing lights.
+			// 	// By setting material.needsUpdate to be true, the updated shaders
+			// 	// are recompiled.
+			// 	if ( numPointLights !== lights.pointLights.length
+			// 		|| numDirectionalLights !== lights.directionalLights.length ) {
+
+			// 		meshes[ i ].material.vertexShader =
+			// 			replaceNumLights( teapots[ i ].vertexShader,
+			// 				lights.pointLights.length, lights.directionalLights.length );
+
+			// 		meshes[ i ].material.fragmentShader =
+			// 			replaceNumLights( teapots[ i ].fragmentShader,
+			// 				lights.pointLights.length, lights.directionalLights.length );
+
+			// 		meshes[ i ].material.needsUpdate = true;
+
+			// 	}
+			// } else {
+
+			// 	meshes[ 0 ].material.uniforms.pointLights.value = lightstwo.pointLightstwo;
+
+			// 	meshes[ 0 ].material.uniforms.directionalLights.value = lightstwo.directionalLightstwo;
+
+			// 	meshes[ 0 ].material.uniforms.ambientLightColor.value = lightstwo.ambientLightColortwo;
+
+			// 	meshes[ 0 ].material.uniforms.attenuation.value = state.attenuation;
+
+			// 	meshes[ 0 ].material.uniforms.material.value = state.materialtwo;
+
+
+			// 	// Update the shaders based on the number of existing lights.
+			// 	// By setting material.needsUpdate to be true, the updated shaders
+			// 	// are recompiled.
+			// 	if ( numPointLights !== lightstwo.pointLights.length
+			// 		|| numDirectionalLights !== lightstwo.directionalLights.length ) {
+
+			// 		meshes[ 0 ].material.vertexShader =
+			// 			replaceNumLights( teapots[ 0 ].vertexShader,
+			// 				lights.pointLights.length, lightstwo.directionalLights.length );
+
+			// 		meshes[ 0 ].material.fragmentShader =
+			// 			replaceNumLights( teapots[ 0 ].fragmentShader,
+			// 				lights.pointLights.length, lightstwo.directionalLights.length );
+
+			// 		meshes[ 0 ].material.needsUpdate = true;
+
+			// 	}
+			//}
 
 		}
 

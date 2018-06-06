@@ -24,6 +24,8 @@ var StateController = function ( dispParams ) {
 	this.state = {
 		// Values are specified in millimeter.
 
+		score: 0,
+
 		clipNear: 100,
 
 		clipFar: 100000,
@@ -56,7 +58,7 @@ var StateController = function ( dispParams ) {
 
 					position: new THREE.Vector3( 100, 1000, 1000 ),
 
-					color: new THREE.Color( 'lightgreen' ).multiplyScalar( 1.3 ),
+					color: new THREE.Color( 'lightgreen' ).multiplyScalar( 1.3 ), //lightgreen
 
 				},
 			],
@@ -79,6 +81,42 @@ var StateController = function ( dispParams ) {
 
 		},
 
+
+
+
+		// lightstwo: {
+
+		// 	pointLightstwo: [
+		// 		{
+
+		// 			positiontwo: new THREE.Vector3( 100, 1000, 1000 ),
+
+		// 			colortwo: new THREE.Color( 'lightgreen' ).multiplyScalar( 1.3 ), //lightgreen
+
+		// 		},
+		// 	],
+
+		// 	directionalLightstwo: [],
+
+		// 	ambientLightColortwo: new THREE.Vector3( 1, 1, 1 ),
+
+		// },
+
+		// materialtwo: {
+
+		// 	ambient: new THREE.Vector3( 0.3, 0.3, 0.3 ),
+
+		// 	diffuse: new THREE.Vector3( 1.0, 1.0, 1.0 ),
+
+		// 	specular: new THREE.Vector3( 1.0, 1.0, 1.0 ),
+
+		// 	shininess: 120.0,
+
+		// },
+
+
+
+
 		attenuation: new THREE.Vector3( 2.0, 0.0, 0.0 ),
 
 		lensDistortion: new THREE.Vector2( 0.34, 0.55 ),
@@ -98,7 +136,7 @@ var StateController = function ( dispParams ) {
 	// Make sure player doesn't go off the road
 	var curr_sum = 0;
 
-	initWebSocket();
+	//initWebSocket();
 
 
 	/* Private functions */
@@ -261,25 +299,67 @@ var StateController = function ( dispParams ) {
 	/* Public functions */
 
 	// Display the scene parameters in the browser
-	this.display = function () {
+	this.display = function (mode) {
+		if (!mode) {
+			$( "#positionVal" ).html(
 
-		$( "#positionVal" ).html(
+				// "<p>Model rotation: " +
+				// 	vector2ToString( this.state.modelRotation ) + "</p>" +
+				// "<p>Lens distortion: " +
+				// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
+				// "<p>Viewer position: " +
+				// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
+				// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
 
-			// "<p>Model rotation: " +
-			// 	vector2ToString( this.state.modelRotation ) + "</p>" +
-			// "<p>Lens distortion: " +
-			// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
-			// "<p>Viewer position: " +
-			// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
-			// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
+				"<p>Avoid incoming teapots!</p>" +
+				"<p>Your score: " + _this.state.score + "</p>"
+			);
+		} else {
+			if (_this.state.score < 9) {
+			$( "#positionVal" ).html(
 
-			"<p>Cheers neg!" + "</p>" +
-			"<p>Thanks for catching the bug! That could have been bad." + "</p>" +
-			"<p>How was dinner? " + "</p>" +
-			"<p>Fucking fatasses in my class ate all the pizza today before I got to the front of the line " + "</p>" +
-			"<p>Why the fuck would someone take four slices if there are 48 people in the class and only six boxes? " + "</p>" +
-			"<p>I'm ranting. Let me know if I can help more! Good luck!" + "</p>"
-		);
+				// "<p>Model rotation: " +
+				// 	vector2ToString( this.state.modelRotation ) + "</p>" +
+				// "<p>Lens distortion: " +
+				// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
+				// "<p>Viewer position: " +
+				// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
+				// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
+
+					"<p>Game over! :(</p>" +
+					"<p>Your score: " + _this.state.score + "</p>"
+				);
+			} else {
+				$( "#positionVal" ).html(
+
+				// "<p>Model rotation: " +
+				// 	vector2ToString( this.state.modelRotation ) + "</p>" +
+				// "<p>Lens distortion: " +
+				// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
+				// "<p>Viewer position: " +
+				// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
+				// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
+
+					"<p>Game over! Good job, though!</p>" +
+					"<p>Your score: " + _this.state.score + "</p>"
+				);
+			}
+			
+		}
+
+		// $( "#positionVal2" ).html(
+
+		// 	// "<p>Model rotation: " +
+		// 	// 	vector2ToString( this.state.modelRotation ) + "</p>" +
+		// 	// "<p>Lens distortion: " +
+		// 	// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
+		// 	// "<p>Viewer position: " +
+		// 	// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
+		// 	// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
+
+		// 	"<p>Avoid incoming teapots!</p>" +
+		// 	"<p>Your score: " + "</p>"
+		// );
 
 	};
 
@@ -316,6 +396,10 @@ var StateController = function ( dispParams ) {
 		},
 
 	} );
+
+	this.IncrementScore = function () {
+		_this.state.score++;
+	}
 
 
 

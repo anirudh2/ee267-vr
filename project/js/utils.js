@@ -45,7 +45,7 @@ function vector2ToString( v ) {
  * By clicking the rendering switch botton, the rendering mode is changed.
 */
 $( "#renderingSwitchBtn" ).click( function () {
-
+	//console.log("clicked");
 	switchRenderingMode();
 
 } );
@@ -64,17 +64,37 @@ $( "html" ).keydown( function ( e ) {
 
 function switchRenderingMode() {
 
-	if ( renderingMode === STEREO_MODE ) {
+	// if ( renderingMode === STEREO_MODE ) {
 
-		renderingMode = STEREO_UNWARP_MODE;
+	// 	renderingMode = STEREO_UNWARP_MODE;
 
-		$( "#renderingSwitchBtn" ).html( "Bla" ); //Stereo Unwarp
+	// 	$( "#renderingSwitchBtn" ).html( "Bla" ); //Stereo Unwarp
 
-	} else if ( renderingMode === STEREO_UNWARP_MODE ) {
+	// } else if ( renderingMode === STEREO_UNWARP_MODE ) {
 
-		renderingMode = STEREO_MODE;
+	// 	renderingMode = STEREO_MODE;
 
-		$( "#renderingSwitchBtn" ).html( "Yo" ); //Stereo
+	// 	$( "#renderingSwitchBtn" ).html( "Yo" ); //Stereo
+
+	// }
+	console.log("in function");
+	if ( renderingMode === EASY_MODE ) {
+		if (gameOver) {
+			location.reload();
+		}
+		console.log("changing to difficult mode");
+		renderingMode = DIFFICULT_MODE;
+
+		$( "#renderingSwitchBtn" ).html( "Change difficulty" ); //Stereo Unwarp
+
+	} else if ( renderingMode === DIFFICULT_MODE ) {
+		if (gameOver) {
+			location.reload();
+		}
+		console.log("changing to easy mode");
+		renderingMode = EASY_MODE;
+
+		$( "#renderingSwitchBtn" ).html( "Change difficulty" ); //Stereo
 
 	}
 

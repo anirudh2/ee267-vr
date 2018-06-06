@@ -82,11 +82,30 @@ div.ui-input-text {
 }
 
 #renderingSwitchBtn {
-    top: 10px;
-    left: 100px;
+    top: 450px;
+    left: 225px;
 }
 
 #positionVal {
+    /*position: absolute;
+    font-family: Courier New;
+    top: 0px;
+    left: 240px;
+    width: 400px;
+    color: #ffffff;
+    font-size: 15px;
+    text-align:left;*/
+    position: absolute;
+    font-family: Courier New;
+    top: 500px;
+    left: 225px;
+    width: 400px;
+    color: #ffffff;
+    font-size: 15px;
+    text-align:left;
+}
+
+/*#positionVal2 {
     position: absolute;
     font-family: Courier New;
     top: 0px;
@@ -95,7 +114,15 @@ div.ui-input-text {
     color: #ffffff;
     font-size: 15px;
     text-align:left;
-}
+    position: absolute;
+    font-family: Courier New;
+    top: 300px;
+    left: 500px;
+    width: 400px;
+    color: #ffffff;
+    font-size: 15px;
+    text-align:left;
+}*/
 
 #displayParams {
     position: absolute;

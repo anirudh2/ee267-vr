@@ -23,10 +23,16 @@
  */
 
 // Global variales to control the rendring mode
-const STEREO_MODE = 0;
-const STEREO_UNWARP_MODE = 1;
+// const STEREO_MODE = 0;
+// const STEREO_UNWARP_MODE = 1;
 
-var renderingMode = STEREO_UNWARP_MODE;
+const EASY_MODE = 0;
+const DIFFICULT_MODE = 1;
+
+//var renderingMode = STEREO_UNWARP_MODE;
+var renderingMode = EASY_MODE;
+
+var gameOver = 0;
 
 
 // Set up display parameters.
@@ -129,11 +135,11 @@ function makeTeapot(wait, isLeft, isRight) {
 
 // teapots.push( teapot4 );
 
-var road = [];
+// var road = [];
 
-var geometry = new THREE.PlaneGeometry( 5, 20, 32 );
-var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
-var plane = new THREE.Mesh( geometry, material );
+// var geometry = new THREE.PlaneGeometry( 5, 20, 32 );
+// var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+// var plane = new THREE.Mesh( geometry, material );
 //scene.add( plane );
 
 // Create an instance of our StateCoontroller class.
@@ -144,7 +150,7 @@ var sc = new StateController( dispParams );
 
 // Set the teapots to the renderer
 var standardRenderer =
-	new StandardRenderer( webglRenderer, teapots, dispParams );
+	new StandardRenderer( webglRenderer, teapots, dispParams, 0 );
 
 var stereoUnwarpRenderer =
 	new StereoUnwarpRenderer( webglRenderer, dispParams );
@@ -182,7 +188,12 @@ var counter = 0;
 var startflag = 0;
 function animate() {
 
-	if (((counter % 100) == 0) && (startflag)) {
+	if (renderingMode == EASY_MODE) {
+		var modulo = 100;
+	} else if (renderingMode == DIFFICULT_MODE) {
+		var modulo = 25;
+	}
+	if (((counter % modulo) == 0) && (startflag)) {
 		console.log("player x: " + teapots[0].position.x);
 		var curr_rand = Math.floor((Math.random() * 10) + 1);
 		if (curr_rand < 3) {
@@ -203,21 +214,27 @@ function animate() {
 	}
 	counter++;
 
+	if (renderingMode == EASY_MODE) {
+		var multiplier = 2;
+	} else if (renderingMode == DIFFICULT_MODE) {
+		var multiplier = 8;
+	}
 	for (var i = 1; i < teapots.length; i++) {
 		if (teapots[i].position.x < 0) {
-			teapots[i].position.x -= 2*0.91;
-			teapots[i].position.y -= 2;
-			teapots[i].weight += 2*0.00122727272;
+			teapots[i].position.x -= multiplier*0.91;
+			teapots[i].position.y -= multiplier;
+			teapots[i].weight += multiplier*0.00122727272;
 		} else if (teapots[i].position.x > 0) {
-			teapots[i].position.x += 2*0.91;
-			teapots[i].position.y -= 2;
-			teapots[i].weight += 2*0.00122727272;
+			teapots[i].position.x += multiplier*0.91;
+			teapots[i].position.y -= multiplier;
+			teapots[i].weight += multiplier*0.00122727272;
 		} else {
-			teapots[i].position.y -= 2;
-			teapots[i].weight += 2*0.00122727272;
+			teapots[i].position.y -= multiplier;
+			teapots[i].weight += multiplier*0.00122727272;
 		}
 		if (teapots[i].position.y == -500) {
 			teapots.splice(i,1);
+			sc.IncrementScore();
 		}
 	}
 	var standardRenderer =
@@ -230,12 +247,43 @@ function animate() {
 	// }
 	for (var i = 1; i < teapots.length; i++) {
 		if ((Math.abs(teapots[0].currXPos-teapots[i].position.x) < 20)
-		&& Math.abs(teapots[0].position.y-teapots[i].position.y) < 15) {
+		&& Math.abs(teapots[0].position.y-teapots[i].position.y) < 30) {
 			/*console.log("player x: " + teapots[0].position.x);
 			console.log("cpu x: " + teapots[i].position.x);
 			console.log("player y: " + teapots[0].position.y);
 			console.log("cpu y: " + teapots[i].position.y);*/
+
+			// // add a grid object in the scene
+			// var w = 2000;
+			// // var sqGridBackRight = new THREE.GridHelper( w, 20, "gray", "gray" );
+
+			// var x_right = 600;
+			// var y_right = 0;
+			// var z_right = - 600;
+
+			// // Overlay a plane over the grid for depth of field rendering
+			// var planeGeometryBackRight = new THREE.PlaneGeometry( w, w, 10, 10 );
+
+			// //color used to be ivory
+			// var planeMaterialBackRight = new THREE.MeshBasicMaterial( { color: "red", side: THREE.DoubleSide } );
+
+			// var planeBackRight = new THREE.Mesh( planeGeometryBackRight, planeMaterialBackRight );
+
+			// planeBackRight.position.set( x_right, y_right, z_right - 1 );
+
+			// planeBackRight.rotation.x = 0 * THREE.Math.DEG2RAD;
+
+			// planeBackRight.rotation.y = - 45 * THREE.Math.DEG2RAD;
+
+			// planeBackRight.rotation.z = 0 * THREE.Math.DEG2RAD;
+
+			// scene.add( planeBackRight );
+			var standardRenderer =
+				new StandardRenderer( webglRenderer, teapots, dispParams, 1 );
+			// Display parameters used for rendering.
+			
 			cancelAnimationFrame(curr_id);
+			gameOver = 1;
 		}
 	}
 	// Start performance monitoring
@@ -244,39 +292,51 @@ function animate() {
 	// update model/view/projection matrices
 	mat.update( sc.state );
 
-	if ( renderingMode === STEREO_MODE ) {
+	// if ( renderingMode === STEREO_MODE ) {
 
-		if ( webglRenderer.autoClear ) webglRenderer.clear();
+	// 	if ( webglRenderer.autoClear ) webglRenderer.clear();
 
-		webglRenderer.setScissorTest( true );
+	// 	webglRenderer.setScissorTest( true );
 
-		// Render for the left eye on the left viewport
-		webglRenderer.setScissor(
-			0, 0, dispParams.canvasWidth / 2, dispParams.canvasHeight );
+	// 	// Render for the left eye on the left viewport
+	// 	webglRenderer.setScissor(
+	// 		0, 0, dispParams.canvasWidth / 2, dispParams.canvasHeight );
 
-		webglRenderer.setViewport(
-			0, 0, dispParams.canvasWidth / 2, dispParams.canvasHeight );
+	// 	webglRenderer.setViewport(
+	// 		0, 0, dispParams.canvasWidth / 2, dispParams.canvasHeight );
 
-		standardRenderer.render(
-			sc.state, mat.modelMat, mat.stereoViewMat.L, mat.stereoProjectionMat.L );
+	// 	standardRenderer.render(
+	// 		sc.state, mat.modelMat, mat.stereoViewMat.L, mat.stereoProjectionMat.L );
 
-		// Render for the right eye on the right viewport
-		webglRenderer.setScissor(
-			 dispParams.canvasWidth / 2, 0,
-			 dispParams.canvasWidth / 2, dispParams.canvasHeight );
+	// 	// Render for the right eye on the right viewport
+	// 	webglRenderer.setScissor(
+	// 		 dispParams.canvasWidth / 2, 0,
+	// 		 dispParams.canvasWidth / 2, dispParams.canvasHeight );
 
-		webglRenderer.setViewport(
-			dispParams.canvasWidth / 2, 0,
-			dispParams.canvasWidth / 2, dispParams.canvasHeight );
+	// 	webglRenderer.setViewport(
+	// 		dispParams.canvasWidth / 2, 0,
+	// 		dispParams.canvasWidth / 2, dispParams.canvasHeight );
 
-		standardRenderer.render(
-			sc.state, mat.modelMat, mat.stereoViewMat.R, mat.stereoProjectionMat.R );
+	// 	standardRenderer.render(
+	// 		sc.state, mat.modelMat, mat.stereoViewMat.R, mat.stereoProjectionMat.R );
 
-		webglRenderer.setScissorTest( false );
+	// 	webglRenderer.setScissorTest( false );
 
-	} else if ( renderingMode === STEREO_UNWARP_MODE ) {
+	// } else if ( renderingMode === STEREO_UNWARP_MODE ) {
 
-		// Render for the left eye on frame buffer object
+	// 	// Render for the left eye on frame buffer object
+	// 	standardRenderer.renderOnTarget( stereoUnwarpRenderer.renderTargetL,
+	// 		sc.state, mat.modelMat, mat.stereoViewMat.L, mat.stereoProjectionMat.L, mat.scrollModelMat );
+
+	// 	// Render for the right eye on frame buffer object
+	// 	standardRenderer.renderOnTarget( stereoUnwarpRenderer.renderTargetR,
+	// 		sc.state, mat.modelMat, mat.stereoViewMat.R, mat.stereoProjectionMat.R, mat.scrollModelMat );
+
+	// 	stereoUnwarpRenderer.render( sc.state );
+
+	// }
+
+	// Render for the left eye on frame buffer object
 		standardRenderer.renderOnTarget( stereoUnwarpRenderer.renderTargetL,
 			sc.state, mat.modelMat, mat.stereoViewMat.L, mat.stereoProjectionMat.L, mat.scrollModelMat );
 
@@ -286,12 +346,15 @@ function animate() {
 
 		stereoUnwarpRenderer.render( sc.state );
 
-	}
-
 	// End performance monitoring
 	stats.end();
 
 	// Display parameters used for rendering.
-	sc.display();
+	if (!gameOver) {
+		sc.display(0);
+	} else {
+		sc.display(1);
+		$( "#renderingSwitchBtn" ).html( "Play again" );
+	}
 
 }
