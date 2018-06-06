@@ -197,7 +197,7 @@ var StateController = function ( dispParams ) {
 				curr_sum -= shift;
 			}
 		}
-		if (curr_sum == 0) {
+		else if (curr_sum == 0) {
 			if (e.keyCode == '37') {
 					_this.state.modelTranslation.x -= shift;
 					curr_sum -= shift;
@@ -206,12 +206,14 @@ var StateController = function ( dispParams ) {
 					curr_sum += shift;
 				}
 			}
-		if (curr_sum == -shift) {
+		else if (curr_sum == -shift) {
 			if (e.keyCode == '39') {
 				_this.state.modelTranslation.x += shift;
 				curr_sum += shift;
 			}
 		}
+		// console.log(_this.state.modelTranslation.x);
+		// console.log(curr_sum);
 		// } else {
 		// 	if (e.keyCode == '37') {
 		// 		_this.state.modelTranslation.x -= -455;
