@@ -71,7 +71,7 @@ var teapot1 =
 	new Teapot( new THREE.Vector3( 0, -450, 0 ), //was 0, -350, -400 was ( - 500, 0, 0 )
 		$( "#vShaderMultiPhong" ).text(),
 		$( "#fShaderMultiPhong" ).text(),
-	 0.75);
+	 0.75, 0);
 
 teapots.push( teapot1 );
 // makeTeapot(0,true, false);
@@ -87,21 +87,21 @@ function makeTeapot(wait, isLeft, isRight) {
 				new Teapot( new THREE.Vector3( -1, 100, -100 ), //was ( - 500, 0, 0 )
 					$( "#vShaderMultiPhong" ).text(),
 					$( "#fShaderMultiPhong" ).text(),
-				0.075 );
+				0.075, 0 );
 			teapots.push(teapot2);
 		} else if (!isLeft && isRight) {
 				var teapot2 =
 				new Teapot( new THREE.Vector3( 1, 100, -100 ), //was ( - 500, 0, 0 )
 					$( "#vShaderMultiPhong" ).text(),
 					$( "#fShaderMultiPhong" ).text(),
-					0.075 );
+					0.075,0 );
 				teapots.push(teapot2);
 		} else {
 				var teapot2 =
 				new Teapot( new THREE.Vector3( 0, 100, -100 ), //was ( - 500, 0, 0 )
 					$( "#vShaderMultiPhong" ).text(),
 					$( "#fShaderMultiPhong" ).text(),
-				0.075 );
+				0.075,0 );
 				teapots.push(teapot2);
 		}
 	}
@@ -229,7 +229,7 @@ function animate() {
 	// 	cancelAnimationFrame(curr_id);
 	// }
 	for (var i = 1; i < teapots.length; i++) {
-		if ((teapots[0].position.x == teapots[i].position.x)
+		if ((Math.abs(teapots[0].currXPos-teapots[i].position.x) < 20)
 		&& Math.abs(teapots[0].position.y-teapots[i].position.y) < 15) {
 			/*console.log("player x: " + teapots[0].position.x);
 			console.log("cpu x: " + teapots[i].position.x);

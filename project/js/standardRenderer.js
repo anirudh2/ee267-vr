@@ -366,6 +366,7 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams ) {
 			var positionTranslation = new THREE.Matrix4().makeTranslation( teapots[ i ].position.x, teapots[ i ].position.y, teapots[ i ].position.z );
 
 			if (i == 0) {
+				teapots[i].currXPos = state.modelTranslation.x
 				var _modelMat =
 					new THREE.Matrix4().multiplyMatrices( positionTranslation, modelMat );
 			} else {

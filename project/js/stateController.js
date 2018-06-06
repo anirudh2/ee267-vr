@@ -273,10 +273,12 @@ var StateController = function ( dispParams ) {
 			// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
 			// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
 
-			"<p>Hey Ani!" + "</p>" +
-			"<p>Sup neg? " + "</p>" +
-			"<p>Good luck making the change! " + "</p>" +
-			"<p>And good luck on 231N! " + "</p>"
+			"<p>Cheers neg!" + "</p>" +
+			"<p>Thanks for catching the bug! That could have been bad." + "</p>" +
+			"<p>How was dinner? " + "</p>" +
+			"<p>Fucking fatasses in my class ate all the pizza today before I got to the front of the line " + "</p>" +
+			"<p>Why the fuck would someone take four slices if there are 48 people in the class and only six boxes? " + "</p>" +
+			"<p>I'm ranting. Let me know if I can help more! Good luck!" + "</p>"
 		);
 
 	};
