@@ -29,10 +29,14 @@
 const EASY_MODE = 0;
 const DIFFICULT_MODE = 1;
 
+const shift = 500;
+
 //var renderingMode = STEREO_UNWARP_MODE;
 var renderingMode = EASY_MODE;
 
 var gameOver = 0;
+
+var curr_sum = 0;
 
 
 // Set up display parameters.
@@ -186,7 +190,50 @@ animate();
 // https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
 var counter = 0;
 var startflag = 0;
+var okayToMove = 1;
+
+function func() {
+	okayToMove = 1;
+}
+
 function animate() {
+
+	// if (sc.state.gyro_running_total < -10)
+	// {
+	// 	//console.log("hallelujah");
+	// 	sc.state.modelTranslation.x -= 500;
+	// }
+	//console
+
+
+
+		if (curr_sum == shift) {
+			if (sc.state.gyro_running_total < -20) {
+				sc.state.modelTranslation.x -= shift;
+				curr_sum -= shift;
+				okayToMove = 0;
+				window.setTimeout(func,500);
+			}
+		}
+		else if (curr_sum == 0) {
+			if ((sc.state.gyro_running_total < -20) && (okayToMove == 1)) {
+					sc.state.modelTranslation.x -= shift;
+					curr_sum -= shift;
+				} else if ((sc.state.gyro_running_total > 20) && (okayToMove == 1)) {
+					sc.state.modelTranslation.x += shift;
+					curr_sum += shift;
+				}
+			}
+		else if (curr_sum == -shift) {
+			if (sc.state.gyro_running_total > 20) {
+				sc.state.modelTranslation.x += shift;
+				curr_sum += shift;
+				okayToMove = 0;
+				window.setTimeout(func,500);
+			}
+		}
+
+
 
 	if (renderingMode == EASY_MODE) {
 		var modulo = 100;

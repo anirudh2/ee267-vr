@@ -47,6 +47,12 @@ var StateController = function ( dispParams ) {
 
 		imuQuaternion: new THREE.Quaternion(),
 
+		//roll: 0.1,
+
+		gyro_prev: null,
+
+		gyro_running_total: 0.0,
+
 		baseStationPitch: 0,
 
 		baseStationRoll: 0,
@@ -136,7 +142,7 @@ var StateController = function ( dispParams ) {
 	// Make sure player doesn't go off the road
 	var curr_sum = 0;
 
-	//initWebSocket();
+	initWebSocket();
 
 
 	/* Private functions */
@@ -480,14 +486,44 @@ var StateController = function ( dispParams ) {
 
 			var data = imu.data.replace( /"/g, "" ).split( " " );
 
-			if ( data[ 0 ] == "QC" ) {
+			if (data[0] == "FB") {
+				var around_z = data[1];
+				//console.log(data[1]);
+				if (_this.state.gyro_prev != null) {
+					_this.state.gyro_running_total += (around_z - _this.state.gyro_prev);
+					//_this.state.z_rot_prev = around_z;
+				} else {
+					//_this.state.z_rot_prev = around_z;
+				}
+				_this.state.gyro_prev = around_z;
+				//console.log(_this.state.gyro_running_total);
+			} else if ( data[ 0 ] == "QC" ) {
+				// _this.state.imuQuaternion.set(
+				// 	Number( data[ 2 ] ), Number( data[ 3 ] ),
+				// 	Number( data[ 4 ] ), Number( data[ 1 ] ) ).normalize();
+				//var curr_roll = data[ 4 ];
+				//console.log(curr_roll);
 
-				_this.state.imuQuaternion.set(
-					Number( data[ 2 ] ), Number( data[ 3 ] ),
-					Number( data[ 4 ] ), Number( data[ 1 ] ) ).normalize();
+				var one = data[1];
+				var two = data[2];
+				var three = data[3];
+				var four = data[4];
+				//_this.state.roll = curr_roll;
+				//var idk = Math.asin(2*(two*three + one*four))*180/Math.PI; - around y
+				//var idktwo = Math.atan2(2*two*one - 2*three*four, 1 - 2*two*two - 2*four*four)*180/Math.PI; //- around x
+				//var around_z = Math.atan2(2*three*one - 2*two*four, 1 - 2*three*three - 2*four*four)*180/Math.PI; //-around z
+				//console.log(around_z);
+				// if (_this.state.z_rot_prev != null) {
+				// 	_this.state.z_rot_running_total += (around_z - _this.state.z_rot_prev);
+				// 	//_this.state.z_rot_prev = around_z;
+				// } else {
+				// 	//_this.state.z_rot_prev = around_z;
+				// }
+				// _this.state.z_rot_prev = around_z;
+				//console.log(_this.state.z_rot_running_total);
+				//console.log(around_z);
 
 			} else if ( data[ 0 ] == "PS" ) {
-
 				//apply pitch and roll correction, then rotate around y by 180
 				var pos = new THREE.Vector3(
 					Number( data[ 1 ] ), Number( data[ 2 ] ), Number( data[ 3 ] ) );
@@ -517,6 +553,9 @@ var StateController = function ( dispParams ) {
 				_this.state.viewerPosition.add( translation );
 
 				_this.state.previousPositionHm = pos.clone();
+
+				console.log("current position: " + _this.state.viewerPosition);
+				console.log("previous position: " + _this.state.previousPositionHm);
 
 
 			} else if ( data[ 0 ] == "BS" ) {
