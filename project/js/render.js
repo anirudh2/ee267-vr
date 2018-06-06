@@ -74,9 +74,9 @@ var teapot1 =
 	 0.75);
 
 teapots.push( teapot1 );
-makeTeapot(0,true, false);
-makeTeapot(100,false, true);
-makeTeapot(0, false, false);
+// makeTeapot(0,true, false);
+// makeTeapot(100,false, true);
+//makeTeapot(0, false, false);
 
 
 function makeTeapot(wait, isLeft, isRight) {
@@ -179,9 +179,11 @@ animate();
 // requestAnimationFrame().
 // https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
 var counter = 0;
+var startflag = 0;
 function animate() {
 
-	if ((counter % 100) == 0) {
+	if (((counter % 100) == 0) && (startflag)) {
+		console.log("player x: " + teapots[0].position.x);
 		var curr_rand = Math.floor((Math.random() * 10) + 1);
 		if (curr_rand < 3) {
 			makeTeapot(0, true,false);
@@ -189,6 +191,14 @@ function animate() {
 			makeTeapot(0, false, true);
 		} else if (curr_rand >= 3 && curr_rand <= 5) {
 			makeTeapot(0, false, false);
+		}
+	} else if (((counter % 100) == 0) && (!startflag)) {
+		startflag = 1;
+		var curr_rand = Math.floor((Math.random() * 10) + 1);
+		if (curr_rand < 6) {
+			makeTeapot(0, true,false);
+		} else {
+			makeTeapot(0, false, true);
 		}
 	}
 	counter++;
@@ -221,6 +231,10 @@ function animate() {
 	for (var i = 1; i < teapots.length; i++) {
 		if ((teapots[0].position.x == teapots[i].position.x)
 		&& Math.abs(teapots[0].position.y-teapots[i].position.y) < 15) {
+			/*console.log("player x: " + teapots[0].position.x);
+			console.log("cpu x: " + teapots[i].position.x);
+			console.log("player y: " + teapots[0].position.y);
+			console.log("cpu y: " + teapots[i].position.y);*/
 			cancelAnimationFrame(curr_id);
 		}
 	}

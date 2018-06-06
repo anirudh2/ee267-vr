@@ -68,13 +68,13 @@ function switchRenderingMode() {
 
 		renderingMode = STEREO_UNWARP_MODE;
 
-		$( "#renderingSwitchBtn" ).html( "Stereo Unwarp" );
+		$( "#renderingSwitchBtn" ).html( "Bla" ); //Stereo Unwarp
 
 	} else if ( renderingMode === STEREO_UNWARP_MODE ) {
 
 		renderingMode = STEREO_MODE;
 
-		$( "#renderingSwitchBtn" ).html( "Stereo" );
+		$( "#renderingSwitchBtn" ).html( "Yo" ); //Stereo
 
 	}
 

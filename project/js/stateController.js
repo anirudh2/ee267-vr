@@ -212,6 +212,7 @@ var StateController = function ( dispParams ) {
 				curr_sum += shift;
 			}
 		}
+		console.log("player x state: " + _this.state.modelTranslation.x);
 		// console.log(_this.state.modelTranslation.x);
 		// console.log(curr_sum);
 		// } else {
@@ -264,13 +265,18 @@ var StateController = function ( dispParams ) {
 
 		$( "#positionVal" ).html(
 
-			"<p>Model rotation: " +
-				vector2ToString( this.state.modelRotation ) + "</p>" +
-			"<p>Lens distortion: " +
-				vector2ToString( this.state.lensDistortion ) + "</p>" +
-			"<p>Viewer position: " +
-				vector3ToString( this.state.viewerPosition ) + "</p>" +
-			"<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
+			// "<p>Model rotation: " +
+			// 	vector2ToString( this.state.modelRotation ) + "</p>" +
+			// "<p>Lens distortion: " +
+			// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
+			// "<p>Viewer position: " +
+			// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
+			// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
+
+			"<p>Hey Ani!" + "</p>" +
+			"<p>Sup neg? " + "</p>" +
+			"<p>Good luck making the change! " + "</p>" +
+			"<p>And good luck on 231N! " + "</p>"
 		);
 
 	};
