@@ -183,30 +183,6 @@ var StateController = function ( dispParams ) {
 
 
 	function onMove( e, x, y ) {
-		//
-		// var ctrlKey = e.metaKey // for Mac's command key
-		// 	|| ( navigator.platform.toUpperCase().indexOf( "MAC" ) == - 1
-		// 		&& e.ctrlKey );
-		//
-		// // Check the mouse is clicked. If not, do nothing.
-		// if ( ! clickHold ) return;
-		//
-		// var movement = computeMovement( x, y, previousPosition );
-		//
-		// // Check if the shift-key is pressed
-		// if ( ! ctrlKey ) {
-		//
-		// 	// XY translation
-		// 	_this.state.modelRotation.x += movement.y;
-		//
-		// 	_this.state.modelRotation.y += movement.x;
-		//
-		// } else if ( ctrlKey ) {
-		//
-		// 	// Z translation
-		// 	_this.state.modelTranslation.z += movement.y;
-		//
-		// }
 
 
 				var ctrlKey = e.metaKey // for Mac's command key
@@ -235,6 +211,7 @@ var StateController = function ( dispParams ) {
 
 	}
 
+	// Implemented before gyro as a proof-of-concept
 	$( "html" ).keydown(function ( e ) {
 		var shift = 500;
 		if (curr_sum == shift) {
@@ -259,15 +236,6 @@ var StateController = function ( dispParams ) {
 			}
 		}
 		console.log("player x state: " + _this.state.modelTranslation.x);
-		// console.log(_this.state.modelTranslation.x);
-		// console.log(curr_sum);
-		// } else {
-		// 	if (e.keyCode == '37') {
-		// 		_this.state.modelTranslation.x -= -455;
-		// 	} else if (e.keyCode == '39') {
-		// 		_this.state.modelTranslation.x += 455;
-		// 	}
-		// }
 	} );
 
 
@@ -306,24 +274,6 @@ var StateController = function ( dispParams ) {
 
 	/* Public functions */
 
-	// this.displaytwo = function () {
-	// 	console.log("in displaytwo");
-	// 	var text = "neg";
-	// 	$( "#positionValTwo" ).html(
-	// 		// "<p>Model rotation: " +
-	// 		// 	vector2ToString( this.state.modelRotation ) + "</p>" +
-	// 		// "<p>Lens distortion: " +
-	// 		// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
-	// 		// "<p>Viewer position: " +
-	// 		// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
-	// 		// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
-
-	// 		"<p>Avoid incoming teapots!</p>" +
-	// 		"<p>Mode: " + text + "</p>" +
-	// 		"<p>Your score: " + _this.state.score + "</p>"
-	// 	);
-	// };
-
 	// Display the scene parameters in the browser
 	this.display = function (mode) {
 		if (!mode) {
@@ -334,14 +284,6 @@ var StateController = function ( dispParams ) {
 			}
 			$( "#positionVal" ).html(
 
-				// "<p>Model rotation: " +
-				// 	vector2ToString( this.state.modelRotation ) + "</p>" +
-				// "<p>Lens distortion: " +
-				// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
-				// "<p>Viewer position: " +
-				// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
-				// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
-
 				"<p>Avoid incoming teapots!</p>" +
 				"<p>Mode: " + text + "</p>" +
 				"<p>Your score: " + _this.state.score + "</p>"
@@ -350,33 +292,17 @@ var StateController = function ( dispParams ) {
 			if (_this.state.score < 10) {
 				$( "#positionVal" ).html(
 
-					// "<p>Model rotation: " +
-					// 	vector2ToString( this.state.modelRotation ) + "</p>" +
-					// "<p>Lens distortion: " +
-					// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
-					// "<p>Viewer position: " +
-					// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
-					// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
-
 						"<p>Game over! :(</p>" +
 						"<p>Your score: " + _this.state.score + "</p>"
 					);
 			} else {
 					$( "#positionVal" ).html(
 
-					// "<p>Model rotation: " +
-					// 	vector2ToString( this.state.modelRotation ) + "</p>" +
-					// "<p>Lens distortion: " +
-					// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
-					// "<p>Viewer position: " +
-					// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
-					// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
-
 						"<p>Game over! Good job, though!</p>" +
 						"<p>Your score: " + _this.state.score + "</p>"
 					);
 			}
-			
+
 		}
 
 	};
@@ -420,36 +346,6 @@ var StateController = function ( dispParams ) {
 	}
 
 
-
-	// // Controller for the lens distortion parameter and head-and-neck model
-	// $( "html" ).keydown( function ( e ) {
-	//
-	// 	switch ( e.which ) {
-	//
-	// 		case 50: // Increase alpha: Key 2
-	//
-	// 			if ( _this.state.alphaPositionFilter <= 0.99 ) {
-	//
-	// 				_this.state.alphaPositionFilter += 0.01;
-	//
-	// 			}
-	//
-	//
-	// 			break;
-	//
-	// 		case 51: // Decrease alpha: Key 3
-	//
-	// 			if ( _this.state.alphaPositionFilter >= .01 ) {
-	//
-	// 				_this.state.alphaPositionFilter -= 0.01;
-	//
-	// 			}
-	//
-	// 			break;
-	//
-	// 	}
-	//
-	// } );
 
 
 	function initWebSocket() {
@@ -513,30 +409,11 @@ var StateController = function ( dispParams ) {
 				//console.log(acc);
 				_this.state.accel = acc;
 			} else if ( data[ 0 ] == "QC" ) {
-				// _this.state.imuQuaternion.set(
-				// 	Number( data[ 2 ] ), Number( data[ 3 ] ),
-				// 	Number( data[ 4 ] ), Number( data[ 1 ] ) ).normalize();
-				//var curr_roll = data[ 4 ];
-				//console.log(curr_roll);
 
 				var one = data[1];
 				var two = data[2];
 				var three = data[3];
 				var four = data[4];
-				//_this.state.roll = curr_roll;
-				//var idk = Math.asin(2*(two*three + one*four))*180/Math.PI; - around y
-				//var idktwo = Math.atan2(2*two*one - 2*three*four, 1 - 2*two*two - 2*four*four)*180/Math.PI; //- around x
-				//var around_z = Math.atan2(2*three*one - 2*two*four, 1 - 2*three*three - 2*four*four)*180/Math.PI; //-around z
-				//console.log(around_z);
-				// if (_this.state.z_rot_prev != null) {
-				// 	_this.state.z_rot_running_total += (around_z - _this.state.z_rot_prev);
-				// 	//_this.state.z_rot_prev = around_z;
-				// } else {
-				// 	//_this.state.z_rot_prev = around_z;
-				// }
-				// _this.state.z_rot_prev = around_z;
-				//console.log(_this.state.z_rot_running_total);
-				//console.log(around_z);
 
 			} else if ( data[ 0 ] == "PS" ) {
 				//apply pitch and roll correction, then rotate around y by 180
