@@ -408,7 +408,7 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams, gameOver )
 		state, modelMat, viewMat, projectionMat, scrollModelMat ) {
 
 		var lights = state.lights;
-		//var lightstwo = state.lightstwo;
+		var lightstwo = state.lightstwo;
 
 		for ( var i = 0; i < teapots.length; i ++ ) {
 
@@ -529,7 +529,7 @@ var StandardRenderer = function ( webglRenderer, teapots, dispParams, gameOver )
 			// 		meshes[ 0 ].material.needsUpdate = true;
 
 			// 	}
-			//}
+			// }
 
 		}
 

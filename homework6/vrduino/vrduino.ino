@@ -48,8 +48,11 @@ const int ACC    = 4;
 //quaternion from comp filter
 const int QC     = 5;
 
+//COMBINED
+const int COMB = 10;
+
 //chose which values you want to stream
-int streamMode = FLAT;
+int streamMode = COMB; //FLAT
 
 //variables to measure read frequency
 int nReads = 0;
@@ -193,6 +196,12 @@ void loop() {
     //print out acc values
     Serial.printf("ACC: %.3f %.3f %.3f\n",
       acc[0], acc[1], acc[2]);
+
+  } else if (streamMode == COMB) {
+
+    //print out acc values
+    Serial.printf("CO %.3f %.3f\n",
+      flatlandRollGyr, acc[2]);
 
   } else if (streamMode == QC) {
 

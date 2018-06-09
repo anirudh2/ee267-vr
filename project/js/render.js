@@ -31,6 +31,9 @@ const DIFFICULT_MODE = 1;
 
 const shift = 500;
 
+const translation_threshold = 15;
+const nod_threshold = 8;
+
 //var renderingMode = STEREO_UNWARP_MODE;
 var renderingMode = EASY_MODE;
 
@@ -191,9 +194,14 @@ animate();
 var counter = 0;
 var startflag = 0;
 var okayToMove = 1;
+var okayToPress = 1;
 
 function func() {
 	okayToMove = 1;
+}
+
+function func2() {
+	okayToPress = 1;
 }
 
 function animate() {
@@ -206,9 +214,14 @@ function animate() {
 	//console
 
 
+		if ((sc.state.accel < -nod_threshold) && (okayToPress == 1)) {
+			switchRenderingMode();
+			okayToPress = 0;
+			window.setTimeout(func2,1000);
+		}
 
 		if (curr_sum == shift) {
-			if (sc.state.gyro_running_total < -20) {
+			if (sc.state.gyro_running_total < -translation_threshold) {
 				sc.state.modelTranslation.x -= shift;
 				curr_sum -= shift;
 				okayToMove = 0;
@@ -216,16 +229,16 @@ function animate() {
 			}
 		}
 		else if (curr_sum == 0) {
-			if ((sc.state.gyro_running_total < -20) && (okayToMove == 1)) {
+			if ((sc.state.gyro_running_total < -translation_threshold) && (okayToMove == 1)) {
 					sc.state.modelTranslation.x -= shift;
 					curr_sum -= shift;
-				} else if ((sc.state.gyro_running_total > 20) && (okayToMove == 1)) {
+				} else if ((sc.state.gyro_running_total > translation_threshold) && (okayToMove == 1)) {
 					sc.state.modelTranslation.x += shift;
 					curr_sum += shift;
 				}
 			}
 		else if (curr_sum == -shift) {
-			if (sc.state.gyro_running_total > 20) {
+			if (sc.state.gyro_running_total > translation_threshold) {
 				sc.state.modelTranslation.x += shift;
 				curr_sum += shift;
 				okayToMove = 0;
@@ -293,8 +306,10 @@ function animate() {
 	// 	cancelAnimationFrame(curr_id);
 	// }
 	for (var i = 1; i < teapots.length; i++) {
-		if ((Math.abs(teapots[0].currXPos-teapots[i].position.x) < 20)
-		&& Math.abs(teapots[0].position.y-teapots[i].position.y) < 30) {
+		if ((Math.abs(teapots[0].currXPos - teapots[i].position.x) < 20
+		&& Math.abs(teapots[0].position.y-teapots[i].position.y) < 30)) {
+		// if ((Math.abs(teapots[0].currXPos - teapots[i].position.x) < 20)
+		// && ((teapots[0].position.y - teapots[i].position.y) > -30)) {
 			/*console.log("player x: " + teapots[0].position.x);
 			console.log("cpu x: " + teapots[i].position.x);
 			console.log("player y: " + teapots[0].position.y);
@@ -399,8 +414,10 @@ function animate() {
 	// Display parameters used for rendering.
 	if (!gameOver) {
 		sc.display(0);
+		//sc.displaytwo();
 	} else {
 		sc.display(1);
+		//sc.displaytwo();
 		$( "#renderingSwitchBtn" ).html( "Play again" );
 	}
 

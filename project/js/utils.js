@@ -77,6 +77,7 @@ function switchRenderingMode() {
 	// 	$( "#renderingSwitchBtn" ).html( "Yo" ); //Stereo
 
 	// }
+	
 	console.log("in function");
 	if ( renderingMode === EASY_MODE ) {
 		if (gameOver) {

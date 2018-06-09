@@ -53,6 +53,8 @@ var StateController = function ( dispParams ) {
 
 		gyro_running_total: 0.0,
 
+		accel: 0.0,
+
 		baseStationPitch: 0,
 
 		baseStationRoll: 0,
@@ -304,9 +306,32 @@ var StateController = function ( dispParams ) {
 
 	/* Public functions */
 
+	// this.displaytwo = function () {
+	// 	console.log("in displaytwo");
+	// 	var text = "neg";
+	// 	$( "#positionValTwo" ).html(
+	// 		// "<p>Model rotation: " +
+	// 		// 	vector2ToString( this.state.modelRotation ) + "</p>" +
+	// 		// "<p>Lens distortion: " +
+	// 		// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
+	// 		// "<p>Viewer position: " +
+	// 		// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
+	// 		// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
+
+	// 		"<p>Avoid incoming teapots!</p>" +
+	// 		"<p>Mode: " + text + "</p>" +
+	// 		"<p>Your score: " + _this.state.score + "</p>"
+	// 	);
+	// };
+
 	// Display the scene parameters in the browser
 	this.display = function (mode) {
 		if (!mode) {
+			if (renderingMode == EASY_MODE) {
+				var text = "Easy"
+			} else {
+				var text = "Difficult"
+			}
 			$( "#positionVal" ).html(
 
 				// "<p>Model rotation: " +
@@ -318,54 +343,41 @@ var StateController = function ( dispParams ) {
 				// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
 
 				"<p>Avoid incoming teapots!</p>" +
+				"<p>Mode: " + text + "</p>" +
 				"<p>Your score: " + _this.state.score + "</p>"
 			);
 		} else {
-			if (_this.state.score < 9) {
-			$( "#positionVal" ).html(
-
-				// "<p>Model rotation: " +
-				// 	vector2ToString( this.state.modelRotation ) + "</p>" +
-				// "<p>Lens distortion: " +
-				// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
-				// "<p>Viewer position: " +
-				// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
-				// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
-
-					"<p>Game over! :(</p>" +
-					"<p>Your score: " + _this.state.score + "</p>"
-				);
-			} else {
+			if (_this.state.score < 10) {
 				$( "#positionVal" ).html(
 
-				// "<p>Model rotation: " +
-				// 	vector2ToString( this.state.modelRotation ) + "</p>" +
-				// "<p>Lens distortion: " +
-				// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
-				// "<p>Viewer position: " +
-				// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
-				// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
+					// "<p>Model rotation: " +
+					// 	vector2ToString( this.state.modelRotation ) + "</p>" +
+					// "<p>Lens distortion: " +
+					// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
+					// "<p>Viewer position: " +
+					// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
+					// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
 
-					"<p>Game over! Good job, though!</p>" +
-					"<p>Your score: " + _this.state.score + "</p>"
-				);
+						"<p>Game over! :(</p>" +
+						"<p>Your score: " + _this.state.score + "</p>"
+					);
+			} else {
+					$( "#positionVal" ).html(
+
+					// "<p>Model rotation: " +
+					// 	vector2ToString( this.state.modelRotation ) + "</p>" +
+					// "<p>Lens distortion: " +
+					// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
+					// "<p>Viewer position: " +
+					// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
+					// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
+
+						"<p>Game over! Good job, though!</p>" +
+						"<p>Your score: " + _this.state.score + "</p>"
+					);
 			}
 			
 		}
-
-		// $( "#positionVal2" ).html(
-
-		// 	// "<p>Model rotation: " +
-		// 	// 	vector2ToString( this.state.modelRotation ) + "</p>" +
-		// 	// "<p>Lens distortion: " +
-		// 	// 	vector2ToString( this.state.lensDistortion ) + "</p>" +
-		// 	// "<p>Viewer position: " +
-		// 	// 	vector3ToString( this.state.viewerPosition ) + "</p>" +
-		// 	// "<p>alpha: " + this.state.alphaPositionFilter.toFixed( 2 ) + "</p>"
-
-		// 	"<p>Avoid incoming teapots!</p>" +
-		// 	"<p>Your score: " + "</p>"
-		// );
 
 	};
 
@@ -486,7 +498,7 @@ var StateController = function ( dispParams ) {
 
 			var data = imu.data.replace( /"/g, "" ).split( " " );
 
-			if (data[0] == "FB") {
+			if (data[0] == "CO") {
 				var around_z = data[1];
 				//console.log(data[1]);
 				if (_this.state.gyro_prev != null) {
@@ -497,6 +509,9 @@ var StateController = function ( dispParams ) {
 				}
 				_this.state.gyro_prev = around_z;
 				//console.log(_this.state.gyro_running_total);
+				var acc = data[2];
+				//console.log(acc);
+				_this.state.accel = acc;
 			} else if ( data[ 0 ] == "QC" ) {
 				// _this.state.imuQuaternion.set(
 				// 	Number( data[ 2 ] ), Number( data[ 3 ] ),
